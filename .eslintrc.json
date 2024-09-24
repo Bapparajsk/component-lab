@@ -1,3 +1,22 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+    "rules": {
+      "semi": ["error", "always"], // Enforces semicolons
+      "eol-last": ["error", "always"], // Ensures a newline at the end of files
+      "import/order": [
+        "error",
+        {
+          "groups": ["builtin", "external", "internal"],
+          "newlines-between": "always" // Enforces newlines between different groups of imports
+        }
+      ],
+      "react/jsx-curly-brace-presence": [
+        "error",
+        {
+          "props": "always",
+          "children": "ignore"
+        }
+      ],
+      "react/jsx-boolean-value": ["error", "always"]
+    }
 }
