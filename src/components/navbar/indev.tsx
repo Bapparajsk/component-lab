@@ -1,11 +1,26 @@
 "use client";
 import React, {useState, useCallback} from "react";
-import {Navbar, NavbarBrand, NavbarMenuToggle, NavbarMenuItem, NavbarMenu, NavbarContent, NavbarItem, Link} from "@nextui-org/react";
+import {
+    Navbar,
+    NavbarBrand,
+    NavbarMenuToggle,
+    NavbarMenuItem,
+    NavbarMenu,
+    NavbarContent,
+    NavbarItem,
+    Button,
+    Kbd,
+    Tooltip,
+    User,
+} from "@nextui-org/react";
 import { IconTableFilled } from '@tabler/icons-react';
 import {IconMoon, IconSun, IconBrandGithub, IconBrandLinkedin} from "@tabler/icons-react";
+import { SearchIcon } from "@nextui-org/shared-icons";
 import {usePathname} from "next/navigation";
+import Link from "next/link";
 
 import { useTheme } from "@/context/ThemeContext";
+import {TolContent} from "@/components/navbar/TolContent";
 
 
 export default function AppNavbar() {
@@ -16,7 +31,7 @@ export default function AppNavbar() {
     const isValidPath = useCallback((name: string, fullMach = false) => {
         if (fullMach) return pathname === name;
         return pathname.startsWith(name);
-    },[]);
+    },[pathname]);
 
     const menuItems = [
         "Profile",
@@ -43,24 +58,23 @@ export default function AppNavbar() {
 
             <NavbarContent className={"sm:hidden pr-3"} justify={"center"}>
                 <NavbarBrand>
-                    <IconTableFilled />
-                    <p className={"font-bold text-inherit ml-1"}>Component Lab</p>
+                    <Link href={'/'} color={"foreground"} className={"flex items-start justify-center"}>
+                        <IconTableFilled />
+                        <p className={"font-bold text-inherit ml-1"}>Component Lab</p>
+                    </Link>
                 </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent className={"hidden sm:flex gap-4"} justify={"center"}>
                 <NavbarBrand>
-                    <IconTableFilled />
-                    <p className={"font-bold text-inherit ml-1"}>Component Lab</p>
-                </NavbarBrand>
-                <NavbarItem isActive={isValidPath("/", true)}>
-                    <Link color={isValidPath("/", true) ? undefined : "foreground"} href={"/"}>
-                        Features
+                    <Link href={'/'} color={"foreground"} className={"flex items-start justify-center"}>
+                        <IconTableFilled />
+                        <p className={"font-bold text-inherit ml-1"}>Component Lab</p>
                     </Link>
-                </NavbarItem>
-                <NavbarItem isActive={isValidPath("/component")}>
-                    <Link color={isValidPath("/component") ? undefined : "foreground"} href={"/component"}>
-                        Customers
+                </NavbarBrand>
+                <NavbarItem >
+                    <Link className={`${isValidPath("/component") && "text-blue-500"} font-bold text-inherit`} href={"/component"}>
+                        Components
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
@@ -94,8 +108,37 @@ export default function AppNavbar() {
                         <IconMoon className={"cursor-pointer"} onClick={toggleTheme} color={"#000000"}/> :
                         <IconSun className={"cursor-pointer"} onClick={toggleTheme} color={"#FFFFFF"}/>)}
                 </NavbarItem>
-            </NavbarContent>
+                <NavbarItem>
+                    <Button
+                        startContent={<SearchIcon/>}
+                        endContent={<Kbd keys={["ctrl"]}>K</Kbd>}
+                        variant={"flat"}
+                        color={"default"}
+                    >
+                        Quick Search...
+                    </Button>
+                </NavbarItem>
+                <NavbarItem>
 
+                </NavbarItem>
+            </NavbarContent>
+                <Tooltip
+                    content={<TolContent name={"BapparajSk"}/>}
+                >
+                    <User
+                        name={"Bapparaj sk"}
+                        description={(
+                            <Link className={"text-blue-500"} href={"https://github.com/Bapparajsk"} target={"_blank"}>
+                                @bapparajsk
+                            </Link>
+                        )}
+
+                        avatarProps={{
+                            src: "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
+                            className: "cursor-pointer"
+                        }}
+                    />
+                </Tooltip>
             <NavbarMenu>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>
@@ -105,7 +148,6 @@ export default function AppNavbar() {
                                 index === 2 ? "warning" : index === menuItems.length - 1 ? "danger" : "foreground"
                             }
                             href={"#"}
-                            size={"lg"}
                         >
                             {item}
                         </Link>

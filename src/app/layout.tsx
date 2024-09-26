@@ -1,10 +1,11 @@
 import {ReactNode} from "react";
 import type { Metadata } from "next";
 
-import AppNavbar from "@/components/navbar/indev";
-import {ThemeProvider} from "@/context/ThemeContext";
-
 import "./globals.css";
+import {QueryProvider} from "@/app/QueryClientProvider";
+import {ThemeProvider} from "@/context/ThemeContext";
+import AppNavbar from "@/components/navbar/indev";
+
 import {Providers} from "./providers";
 
 export const metadata: Metadata = {
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body>
         <Providers>
           <ThemeProvider>
-            <AppNavbar/>
-            {children}
+            <QueryProvider>
+              <AppNavbar/>
+              {children}
+            </QueryProvider>
           </ThemeProvider>
         </Providers>
       </body>
