@@ -51,6 +51,7 @@ export default function AppNavbar() {
             isBordered={true}
             isMenuOpen={isMenuOpen}
             onMenuOpenChange={setIsMenuOpen}
+            className={"z-[1000]"}
         >
             <NavbarContent className={"sm:hidden"} justify={"start"}>
                 <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
