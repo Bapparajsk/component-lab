@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {IconArrowMoveRightFilled} from "@tabler/icons-react";
-// import {Image} from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import StarsBackground from "@/components/ui/background";
@@ -16,6 +16,7 @@ import {RainbowButton} from "@/components/ui/button";
 export const HeroBar = () => {
     const [starColor, setStarColor] = useState<"#9E00FF" | "#2EB9DF">("#2EB9DF");
     const { theme } = useTheme();
+    const { push } = useRouter();
 
     useEffect(() => {
         setStarColor(theme === "dark" ? "#9E00FF" : "#2EB9DF");
@@ -27,7 +28,7 @@ export const HeroBar = () => {
             <ShootingStars starWidth={20} starHeight={6}/>
             <StarsBackground
                 className={"absolute inset-0 "}
-                quantity={20}
+                quantity={100}
                 ease={80}
                 color={starColor}
                 refresh={true}
@@ -46,7 +47,7 @@ export const HeroBar = () => {
                         className={"ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5"}/>
                 </AnimatedGradientText>
             </div>
-            <div className={"h-auto space-y-3"}>
+            <div className={"h-auto space-y-3 mb-8"}>
                 <h1 className={" text-3xl md:text-6xl lg:text-8xl  font-fredoka"}>
                     Mack your website with
                     <br/>
@@ -58,15 +59,15 @@ export const HeroBar = () => {
                     Tailwind CSS, React, and Framer Motion.
                 </p>
             </div>
-
-            <RainbowButton >
-                Get Started
+            <RainbowButton onClick={() => push("/component")}>
+               <p className={"dark:text-black"}>
+                   Components
+               </p>
             </RainbowButton>
-
             <div
-                className={`relative mt-32 animate-fade-up opacity-0 [--animation-delay:400ms] [perspective:2000px] after:absolute after:inset-0 after:z-50 after:[background:linear-gradient(to_top,hsl(var(--background))_30%,transparent)] ${'before:animate-image-glow'}`}>
+                className={`relative mt-20 animate-fade-up opacity-0 [--animation-delay:400ms] [perspective:2000px] after:absolute after:inset-0 after:z-50 after:[background:linear-gradient(to_top,hsl(var(--background))_30%,transparent)] ${'before:animate-image-glow'}`}>
                 <div
-                    className={"rounded-xl border border-white/10 bg-white hero bg-opacity-[0.01] "}>
+                    className={"rounded-xl border border-black/10 dark:border-white/10  bg-white hero bg-opacity-[0.01] "}>
                     <BorderBeam size={200} duration={12} delay={9} />
                     <img src={"/images/hero-bar-dark.png"} alt={"HeroDarkImage"}
                          className={"relative hidden size-full rounded-[inherit] object-contain dark:block"}/>
