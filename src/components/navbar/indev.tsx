@@ -14,18 +14,17 @@ import {
     User,
 } from "@nextui-org/react";
 import { IconTableFilled } from '@tabler/icons-react';
-import {IconMoon, IconSun, IconBrandGithub, IconBrandLinkedin} from "@tabler/icons-react";
+import {IconBrandGithub, IconBrandLinkedin} from "@tabler/icons-react";
 import { SearchIcon } from "@nextui-org/shared-icons";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 
-import { useTheme } from "@/context/ThemeContext";
 import {TolContent} from "@/components/navbar/TolContent";
+import {ThemeToggleButton} from "@/components/navbar/ThemeToggle";
 
 
 export default function AppNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const { theme, toggleTheme } = useTheme();
     const pathname = usePathname();
 
     const isValidPath = useCallback((name: string, fullMach = false) => {
@@ -46,6 +45,19 @@ export default function AppNavbar() {
         "Log Out",
     ];
 
+    const links = [
+        {
+            name: "Linkedin",
+            url: "https://www.linkedin.com/in/bappa-raj-sk-6a0153233/",
+            icon: IconBrandLinkedin,
+        },
+        {
+            name: "Github",
+            url: "https://github.com/Bapparajsk",
+            icon: IconBrandGithub,
+        },
+    ];
+
     return (
         <Navbar
             isBordered={true}
@@ -53,11 +65,7 @@ export default function AppNavbar() {
             onMenuOpenChange={setIsMenuOpen}
             className={"z-[1000]"}
         >
-            <NavbarContent className={"sm:hidden"} justify={"start"}>
-                <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
-            </NavbarContent>
-
-            <NavbarContent className={"sm:hidden pr-3"} justify={"center"}>
+            <NavbarContent justify={"start"} className={"lg:hidden"}>
                 <NavbarBrand>
                     <Link href={'/'} color={"foreground"} className={"flex items-start justify-center"}>
                         <IconTableFilled />
@@ -66,7 +74,27 @@ export default function AppNavbar() {
                 </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className={"hidden sm:flex gap-4"} justify={"center"}>
+            <NavbarContent className={"lg:hidden"} justify={"end"}>
+                {
+                    links.map((link, index) => (
+                        <NavbarItem key={index}>
+                            <Link
+                                href={link.url}
+                                target={"_blank"}
+                                className={"text-gray-600 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 duration-300 ease-in-out transition-all hover:scale-125"}
+                            >
+                                <link.icon />
+                            </Link>
+                        </NavbarItem>
+                    ))
+                }
+                <NavbarItem>
+                    <ThemeToggleButton />
+                </NavbarItem>
+                <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
+            </NavbarContent>
+
+            <NavbarContent className={"hidden lg:flex gap-4"} justify={"center"}>
                 <NavbarBrand>
                     <Link href={'/'} color={"foreground"} className={"flex items-start justify-center"}>
                         <IconTableFilled />
@@ -85,30 +113,21 @@ export default function AppNavbar() {
                 </NavbarItem>
             </NavbarContent>
 
-            <NavbarContent justify={"end"}>
-                <NavbarItem>
-                    <Link
-                        href={"https://www.linkedin.com/in/bappa-raj-sk-6a0153233/"}
-                        target={"_blank"}
-                        className={"text-gray-600 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 duration-300 ease-in-out transition-all hover:scale-125"}
-                    >
-                        <IconBrandLinkedin/>
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link
-                        href={"https://github.com/Bapparajsk"}
-                        target={"_blank"}
-                        className={"text-gray-600 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 duration-300 ease-in-out transition-all hover:scale-125"}
-                    >
-                        <IconBrandGithub/>
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    {(theme === "light" ?
-                        <IconMoon className={"cursor-pointer"} onClick={toggleTheme} color={"#000000"}/> :
-                        <IconSun className={"cursor-pointer"} onClick={toggleTheme} color={"#FFFFFF"}/>)}
-                </NavbarItem>
+            <NavbarContent justify={"end"} className={"hidden lg:flex"}>
+                {
+                    links.map((link, index) => (
+                        <NavbarItem key={index}>
+                            <Link
+                                href={link.url}
+                                target={"_blank"}
+                                className={"text-gray-600 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 duration-300 ease-in-out transition-all hover:scale-125"}
+                            >
+                                <link.icon />
+                            </Link>
+                        </NavbarItem>
+                    ))
+                }
+                <NavbarItem> <ThemeToggleButton /> </NavbarItem>
                 <NavbarItem>
                     <Button
                         startContent={<SearchIcon/>}
@@ -119,11 +138,8 @@ export default function AppNavbar() {
                         Quick Search...
                     </Button>
                 </NavbarItem>
-                <NavbarItem>
-
-                </NavbarItem>
-            </NavbarContent>
                 <Tooltip
+
                     content={<TolContent name={"BapparajSk"}/>}
                 >
                     <User
@@ -140,6 +156,8 @@ export default function AppNavbar() {
                         }}
                     />
                 </Tooltip>
+            </NavbarContent>
+
             <NavbarMenu>
                 {menuItems.map((item, index) => (
                     <NavbarMenuItem key={`${item}-${index}`}>

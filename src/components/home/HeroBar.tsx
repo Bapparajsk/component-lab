@@ -70,15 +70,15 @@ export const HeroBar = () => {
                 </p>
             </div>
             <RainbowButton onClick={() => push("/component")}>
-                <div className={"h-full w-full dark:text-black flex gap-x-5"}>
+                <div className={"h-auto w-full dark:text-black flex gap-x-5 py-4"}>
                     <span className={"font-normal"}>
                         Browse Components
                     </span>
-                    <IconChevronRight size={24}/>
                 </div>
+                <IconChevronRight size={24} className={"text-black"}/>
             </RainbowButton>
             <div className={"w-auto h-fit z-10"}>
-                <div className={"flex items-center justify-center space-x-6 mt-10"}>
+                <div className={"flex items-center justify-center space-x-6 mt-10 flex-wrap"}>
                     {
                         icons.map((item, index) => (
                             <div key={index} className={"flex items-center justify-center font-normal gap-x-2"}>
