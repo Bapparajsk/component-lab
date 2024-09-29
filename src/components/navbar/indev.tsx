@@ -74,7 +74,7 @@ export default function AppNavbar() {
                     </Link>
                 </NavbarBrand>
                 <NavbarItem >
-                    <Link className={`${isValidPath("/component") && "text-blue-500"} font-bold text-inherit`} href={"/component"}>
+                    <Link className={`${isValidPath("/component") && "text-blue-500"} font-bold`} href={"/component"}>
                         Components
                     </Link>
                 </NavbarItem>

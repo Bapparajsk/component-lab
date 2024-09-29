@@ -128,7 +128,7 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
                     y={star.y}
                     width={starWidth * star.scale}
                     height={starHeight}
-                    fill="url(#gradient)"
+                    fill={"url(#gradient)"}
                     transform={`rotate(${star.angle}, ${
                         star.x + (starWidth * star.scale) / 2
                     }, ${star.y + starHeight / 2})`}
