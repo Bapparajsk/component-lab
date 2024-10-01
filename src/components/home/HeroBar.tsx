@@ -69,14 +69,25 @@ export const HeroBar = () => {
                     Tailwind CSS, React, and Framer Motion.
                 </p>
             </div>
-            <RainbowButton onClick={() => push("/component")}>
-                <div className={"h-auto w-full dark:text-black flex gap-x-5 py-4"}>
-                    <span className={"font-normal"}>
-                        Browse Components
-                    </span>
-                </div>
-                <IconChevronRight size={24} className={"text-black"}/>
-            </RainbowButton>
+            <div className={"w-full h-auto flex items-center justify-center flex-wrap gap-5"}>
+                <RainbowButton onClick={() => push("/component")} dark={false}>
+                    <div className={"h-auto w-full dark:text-black flex gap-x-5 py-4"}>
+                        <span className={"font-normal"}>
+                            Browse Components
+                        </span>
+                    </div>
+                    <IconChevronRight size={24} className={"text-white dark:text-black"}/>
+                </RainbowButton>
+                <RainbowButton onClick={() => push("/component")} color={"black"} dark={true}>
+                    <div className={"h-auto w-full text-black dark:text-white flex gap-x-5 py-4"}>
+                        <span className={"font-normal"}>
+                            Create Components
+                        </span>
+                    </div>
+                    <IconChevronRight size={24} className={"text-black dark:text-white"}/>
+                </RainbowButton>
+            </div>
+
             <div className={"w-auto h-fit z-10"}>
                 <div className={"flex items-center justify-center space-x-6 mt-10 flex-wrap"}>
                     {
