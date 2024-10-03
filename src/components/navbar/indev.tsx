@@ -21,11 +21,13 @@ import Link from "next/link";
 
 import {TolContent} from "@/components/navbar/TolContent";
 import {ThemeToggleButton} from "@/components/navbar/ThemeToggle";
+import { useLocation } from "@/context/LocationContext";
 
 
 export default function AppNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const pathname = usePathname();
+    const { getNavPosition } = useLocation();
 
     const isValidPath = useCallback((name: string, fullMach = false) => {
         if (fullMach) return pathname === name;
@@ -64,6 +66,7 @@ export default function AppNavbar() {
             isMenuOpen={isMenuOpen}
             onMenuOpenChange={setIsMenuOpen}
             className={"z-[1000]"}
+            position={getNavPosition()}
         >
             <NavbarContent justify={"start"} className={"lg:hidden"}>
                 <NavbarBrand>

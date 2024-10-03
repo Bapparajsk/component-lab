@@ -5,6 +5,7 @@ import "./globals.css";
 import {QueryProvider} from "@/app/QueryClientProvider";
 import {ThemeProvider} from "@/context/ThemeContext";
 import AppNavbar from "@/components/navbar/indev";
+import { LocationProvider } from "@/context/LocationContext";
 
 import {Providers} from "./providers";
 
@@ -24,8 +25,10 @@ export default function RootLayout({
         <Providers>
           <ThemeProvider>
             <QueryProvider>
-              <AppNavbar/>
-              {children}
+              <LocationProvider>
+                <AppNavbar/>
+                {children}
+              </LocationProvider>
             </QueryProvider>
           </ThemeProvider>
         </Providers>
