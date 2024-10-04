@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Breadcrumbs, BreadcrumbItem, Chip } from "@nextui-org/react";
+import { Button, Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import { IconCodeDots } from "@tabler/icons-react";
 
 
@@ -11,14 +11,14 @@ import { useLocation } from "@/context/LocationContext";
 
 export const Navigation = () => {
     const [active, setActive] = useState<string | null>(null);
-    const { getPath, getTitle } = useLocation();
+    const { getPath } = useLocation();
 
     return (
       <>
           <div className={"sticky top-0 w-full h-auto mb-10 bg-white dark:bg-black z-10"}>
               <div
                 className={"w-full h-20 relative border-b-1 border-gray-300 dark:border-gray-600"}>
-                  <div className={"w-auto h-auto absolute bottom-0 left-0 flex items-center z-10 ml-2 pb-1"}>
+                  <div className={"w-auto h-10 absolute -bottom-1/2 left-0 flex  items-center ml-2"}>
                       <Breadcrumbs>
                           {
                               getPath().map((item, index) => {
@@ -33,16 +33,6 @@ export const Navigation = () => {
                               })
                           }
                       </Breadcrumbs>
-                  </div>
-                  <div className={"w-full h-10 bg-white dark:bg-black absolute -bottom-[52%] flex items-center justify-start"}>
-                      <div className={"w-auto h-auto flex items-center gap-2"}>
-                          {/*<Chip color={"primary"} variant={"dot"} className={"cursor-pointer hover:border-pink-50 hover:text-green-500"}>React</Chip>*/}
-                          {
-                              content[getTitle()]?.map((item, idx) => (
-                                <Chip color={"danger"} variant={"dot"} key={idx} className={"cursor-pointer hover:border-pink-50 hover:text-green-500"}>{item.name}</Chip>
-                              ))
-                          }
-                      </div>
                   </div>
                   <div className={"w-full h-full flex items-center gap-5 px-10 "}>
                       <Menu setActive={setActive}>

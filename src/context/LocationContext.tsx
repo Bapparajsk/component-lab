@@ -10,6 +10,7 @@ type ThemeContextType = {
     getNavPosition: () => "sticky" | "static";
     setTitle: (title: "Getting Started" | "Components" | "Special Effects") => void;
     getTitle: () => string;
+    getLastPath: () => string | undefined;
 };
 
 const LocationContext = createContext<ThemeContextType | undefined>(undefined);
@@ -55,6 +56,10 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return path.length > 1 ? path.slice(1) : [path[0]];
     };
 
+    const getLastPath = () => {
+        return pathname.split("/").pop();
+    };
+
     const getNavPosition = (): "sticky" | "static" => {
         if (pathname === "/") {
             return "sticky";
@@ -70,7 +75,7 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const getTitle = () => titleName;
 
     return (
-        <LocationContext.Provider value={{ getPath, getNavPosition, setTitle, getTitle }}>
+        <LocationContext.Provider value={{ getPath, getNavPosition, setTitle, getTitle, getLastPath }}>
             {children}
         </LocationContext.Provider>
     );
