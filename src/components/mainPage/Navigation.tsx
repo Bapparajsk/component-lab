@@ -27,7 +27,7 @@ export const Navigation = () => {
                                             {
                                                 content[item].map((subItem, subIndex) => {
                                                     return (
-                                                      <HoveredLink href={`/component/${subItem.name}`} title={item as "Getting Started" | "Components" | "Special Effects"} key={subIndex}>
+                                                      <HoveredLink href={`/page/${subItem.name}`} title={item as "Getting Started" | "Components" | "Special Effects"} key={subIndex}>
                                                           {subItem.name}
                                                       </HoveredLink>
                                                     );

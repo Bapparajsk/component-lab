@@ -27,7 +27,7 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     useEffect(() => {
         const p = pathname;
-        if (p.endsWith("/component")) {
+        if (p.endsWith("/(page)")) {
             setTitle("Getting Started");
         } else {
             const tag = p.split("/").pop();

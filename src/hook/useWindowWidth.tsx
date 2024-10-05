@@ -10,7 +10,7 @@ const useWindowWidth = (): number | undefined => {
             setWindowWidth(window.innerWidth);
         };
 
-        // Set window width on component mount (if window is defined)
+        // Set window width on (page) mount (if window is defined)
         if (typeof window !== 'undefined') {
             setWindowWidth(window.innerWidth);
 

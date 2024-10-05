@@ -1,5 +1,5 @@
 "use client";
-import React, {useState, useCallback} from "react";
+import React, {useState} from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -16,26 +16,21 @@ import {
 import { IconTableFilled } from '@tabler/icons-react';
 import {IconBrandGithub, IconBrandLinkedin} from "@tabler/icons-react";
 import { SearchIcon } from "@nextui-org/shared-icons";
-import {usePathname} from "next/navigation";
 import Link from "next/link";
 
 import {TolContent} from "@/components/navbar/TolContent";
 import {ThemeToggleButton} from "@/components/navbar/ThemeToggle";
-import { useLocation } from "@/context/LocationContext";
 import { HoveredLink, Menu, MenuItem } from "@/components/mainPage/dropdown";
 import { content } from "@/data/componentPage/content";
 
+const optimalPath = (path: string) => {
+    return path.split(" ").join("").toLowerCase();
+};
 
 export default function AppNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const pathname = usePathname();
-    const { getNavPosition } = useLocation();
     const [active, setActive] = useState<string | null>(null);
 
-    const isValidPath = useCallback((name: string, fullMach = false) => {
-        if (fullMach) return pathname === name;
-        return pathname.startsWith(name);
-    },[pathname]);
 
     const menuItems = [
         "Profile",
@@ -118,7 +113,7 @@ export default function AppNavbar() {
                                                   {
                                                       content[item].map((subItem, subIndex) => {
                                                           return (
-                                                            <HoveredLink href={`/component/${subItem.name}`}
+                                                            <HoveredLink href={`/${optimalPath(item)}/${subItem.name}`}
                                                                          title={item as "Getting Started" | "Components" | "Special Effects"}
                                                                          key={subIndex}>
                                                                 {subItem.name}

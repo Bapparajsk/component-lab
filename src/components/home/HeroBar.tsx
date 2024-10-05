@@ -70,7 +70,7 @@ export const HeroBar = () => {
                 </p>
             </div>
             <div className={"w-full h-auto flex items-center justify-center flex-wrap gap-5"}>
-                <RainbowButton onClick={() => push("/component/introduction")} dark={false}>
+                <RainbowButton onClick={() => push("/gettingstarted/introduction")} dark={false}>
                     <div className={"h-auto w-full dark:text-black flex gap-x-5 py-4"}>
                         <span className={"font-normal"}>
                             Browse Components
@@ -78,7 +78,7 @@ export const HeroBar = () => {
                     </div>
                     <IconChevronRight size={24} className={"text-white dark:text-black"}/>
                 </RainbowButton>
-                <RainbowButton onClick={() => push("/component/introduction")} color={"black"} dark={true}>
+                <RainbowButton onClick={() => push("/gettingstarted/introduction")} color={"black"} dark={true}>
                     <div className={"h-auto w-full text-black dark:text-white flex gap-x-5 py-4"}>
                         <span className={"font-normal"}>
                             Create Components
