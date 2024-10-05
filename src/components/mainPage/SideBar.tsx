@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {IconChevronRight, IconPointFilled} from "@tabler/icons-react";
-import { Button, Accordion, AccordionItem } from "@nextui-org/react";
+import { IconPointFilled } from "@tabler/icons-react";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 import {cn} from "@/lib/utils";
@@ -10,7 +10,7 @@ import { content } from "@/data/componentPage/content";
 import { useLocation } from "@/context/LocationContext";
 
 export const SideBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { getTitle, getLastPath } = useLocation();
   const router = useRouter();
 
@@ -19,28 +19,9 @@ export const SideBar = () => {
   };
 
   return (
-    <div className={"relative"}>
-      {/* Toggle Button */}
+    <div className={"sticky top-20 left-0"}>
       <div
-        className={cn(`w-auto h-auto fixed top-1/2 -translate-y-1/2 z-50 transition-left duration-1000 ease-[cubic-bezier(0.000,-0.355,0.950,1.505)] ${isOpen ? `left-[15.5rem]` : "left-3"}`,
-          isOpen && "hover:left-64",
-          !isOpen && "hover:left-1"
-        )}
-      >
-        <Button
-          isIconOnly={true}
-          onPress={toggleSlider}
-          variant={"ghost"}
-          color={isOpen ? "primary" : "secondary"}
-        >
-          <IconChevronRight className={`transition-transform duration-500 ease-[cubic-bezier(0.86,0,0.07,1)] ${isOpen? "rotate-180": "rotate-0"}`} />
-        </Button>
-      </div>
-
-      <div
-        className={`fixed top-0 left-0 h-full bg-black text-white transition-transform transform border-r border-gray-600 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } w-72 z-40`}
+        className={`h-full text-white transition-transform transform w-72 z-[10000]`}
       >
         <Accordion
           defaultExpandedKeys={[getTitle()]}
@@ -80,7 +61,6 @@ export const SideBar = () => {
               },
             },
           }}
-          className={"mt-5"}
         >
           {Object.keys(content).map((item, idx) => (
             <AccordionItem key={item} aria-label={`content ${idx+1}`} title={item}>
@@ -88,7 +68,10 @@ export const SideBar = () => {
                 <div
                   key={subItem.id + subItem.name}
                   className={cn("text-sm text-gray-400 pl-4 py-2 cursor-pointer rounded-2xl mb-1 flex items-center justify-start gap-x-1.5 ")}
-                  onClick={() => router.push(`/component/${subItem.name}`)}
+                  onClick={() => {
+                    router.push(`/component/${subItem.name}`);
+                    toggleSlider();
+                  }}
                 >
                   <IconPointFilled size={12}/>
                   <span className={cn("transition-colors duration-200 hover:text-white", getLastPath() === subItem.name && "text-white")}>{subItem.name}</span>
@@ -98,12 +81,6 @@ export const SideBar = () => {
           ))}
         </Accordion>
       </div>
-      {isOpen && (
-        <div
-          onClick={toggleSlider}
-          className={"fixed inset-0 bg-black opacity-50 z-30"}
-        />
-      )}
     </div>
   );
 };

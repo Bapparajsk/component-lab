@@ -3,7 +3,7 @@ import { SectionType } from "@/components/mainPage/Introduction/data";
 export const Sidebar = ({sections, activeSection} : {sections: SectionType[], activeSection: string}) => {
 
   return (
-    <div className={"w-1/6 h-auto relative flex justify-center "}>
+    <div className={"w-1/6 h-auto relative flex justify-center"}>
       <div className={"fixed"}>
         <ul className={"space-y-4"}>
           {sections.map((section: SectionType) => (

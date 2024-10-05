@@ -13,6 +13,7 @@ const config: Config = {
       fontFamily: {
         playwrite: ["Playwrite DE Grund", "cursive"],
         fredoka: ["Fredoka", "sans-serif"],
+        rubik: ["Rubik","sans-serif"],
       },
       colors: {
         background: "var(--background)",

@@ -22,12 +22,15 @@ import Link from "next/link";
 import {TolContent} from "@/components/navbar/TolContent";
 import {ThemeToggleButton} from "@/components/navbar/ThemeToggle";
 import { useLocation } from "@/context/LocationContext";
+import { HoveredLink, Menu, MenuItem } from "@/components/mainPage/dropdown";
+import { content } from "@/data/componentPage/content";
 
 
 export default function AppNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const pathname = usePathname();
     const { getNavPosition } = useLocation();
+    const [active, setActive] = useState<string | null>(null);
 
     const isValidPath = useCallback((name: string, fullMach = false) => {
         if (fullMach) return pathname === name;
@@ -66,7 +69,7 @@ export default function AppNavbar() {
             isMenuOpen={isMenuOpen}
             onMenuOpenChange={setIsMenuOpen}
             className={"z-[1000]"}
-            position={getNavPosition()}
+
         >
             <NavbarContent justify={"start"} className={"lg:hidden"}>
                 <NavbarBrand>
@@ -104,61 +107,80 @@ export default function AppNavbar() {
                         <p className={"font-bold text-inherit ml-1"}>Component Lab</p>
                     </Link>
                 </NavbarBrand>
-                <NavbarItem >
-                    <Link className={`${isValidPath("/component") && "text-blue-500"} font-bold`} href={"/component"}>
-                        Components
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link color={"foreground"} href={"#"}>
-                        Integrations
-                    </Link>
-                </NavbarItem>
+                <NavbarBrand>
+                    <div className={"w-full h-full flex items-center"}>
+                        <Menu setActive={setActive}>
+                            {
+                                Object.keys(content).map((item, index) => {
+                                    return (
+                                          <MenuItem setActive={setActive} active={active} item={item} key={index}>
+                                              <div className={"flex flex-col space-y-4 text-sm"}>
+                                                  {
+                                                      content[item].map((subItem, subIndex) => {
+                                                          return (
+                                                            <HoveredLink href={`/component/${subItem.name}`}
+                                                                         title={item as "Getting Started" | "Components" | "Special Effects"}
+                                                                         key={subIndex}>
+                                                                {subItem.name}
+                                                            </HoveredLink>
+                                                          );
+                                                      })
+                                                  }
+                                              </div>
+                                          </MenuItem>
+                                    );
+                                })
+                            }
+                        </Menu>
+                    </div>
+                </NavbarBrand>
             </NavbarContent>
 
             <NavbarContent justify={"end"} className={"hidden lg:flex"}>
                 {
                     links.map((link, index) => (
-                        <NavbarItem key={index}>
-                            <Link
-                                href={link.url}
-                                target={"_blank"}
-                                className={"text-gray-600 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 duration-300 ease-in-out transition-all hover:scale-125"}
-                            >
-                                <link.icon />
-                            </Link>
-                        </NavbarItem>
+                      <NavbarItem key={index}>
+                          <Link
+                            href={link.url}
+                            target={"_blank"}
+                            className={"text-gray-600 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 duration-300 ease-in-out transition-all hover:scale-125"}
+                          >
+                              <link.icon />
+                          </Link>
+                      </NavbarItem>
                     ))
                 }
                 <NavbarItem> <ThemeToggleButton /> </NavbarItem>
                 <NavbarItem>
                     <Button
-                        startContent={<SearchIcon/>}
-                        endContent={<Kbd keys={["ctrl"]}>K</Kbd>}
-                        variant={"flat"}
-                        color={"default"}
+                      startContent={<SearchIcon />}
+                      endContent={<Kbd keys={["ctrl"]}>K</Kbd>}
+                      variant={"flat"}
+                      color={"default"}
                     >
                         Quick Search...
                     </Button>
                 </NavbarItem>
-                <Tooltip
+                <NavbarItem>
+                    <Tooltip
 
-                    content={<TolContent name={"BapparajSk"}/>}
-                >
-                    <User
-                        name={"Bapparaj sk"}
-                        description={(
+                      content={<TolContent name={"BapparajSk"} />}
+                    >
+                        <User
+                          name={"Bapparaj sk"}
+                          description={(
                             <Link className={"text-blue-500"} href={"https://github.com/Bapparajsk"} target={"_blank"}>
-                                @bapparajsk
-                            </Link>
-                        )}
+                                    @bapparajsk
+                                </Link>
+                            )}
 
-                        avatarProps={{
-                            src: "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
-                            className: "cursor-pointer"
-                        }}
-                    />
-                </Tooltip>
+                            avatarProps={{
+                                src: "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
+                                className: "cursor-pointer"
+                            }}
+                        />
+                    </Tooltip>
+                </NavbarItem>
             </NavbarContent>
 
             <NavbarMenu>
