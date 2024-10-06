@@ -2,6 +2,7 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
     "rules": {
       "react-hooks/exhaustive-deps": "off", // Disables exhaustive-deps rule
+      "@typescript-eslint/no-explicit-any": "off", // Disables no-explicit-any rule
       "semi": ["error", "always"], // Enforces semicolons
       "eol-last": ["error", "always"], // Ensures a newline at the end of files
       "import/order": [

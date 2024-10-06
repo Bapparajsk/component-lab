@@ -8,11 +8,17 @@ export const LinkText = ({
   children,
   color,
   href,
+  space = true,
+  brickLine = false,
+  endContent,
   className
 }: {
   children: ReactNode;
   color?: string;
   href?: string;
+  space?: boolean;
+  brickLine?: boolean;
+  endContent?: ReactNode;
   className?: string
 }) => {
 
@@ -29,7 +35,8 @@ export const LinkText = ({
       onClick={onHandledClick}
       style={{color: color}}
     >
-      &nbsp;{children}
+      {space && "\u00A0"}{children} {endContent}
+      {/*{brickLine && <br/>}*/}
     </span>
   );
 };
