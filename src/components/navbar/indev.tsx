@@ -13,8 +13,7 @@ import {
     Tooltip,
     User,
 } from "@nextui-org/react";
-import { IconTableFilled } from '@tabler/icons-react';
-import {IconBrandGithub, IconBrandLinkedin} from "@tabler/icons-react";
+import { IconTableFilled, IconBrandGithub, IconBrandLinkedin} from '@tabler/icons-react';
 import { SearchIcon } from "@nextui-org/shared-icons";
 import Link from "next/link";
 

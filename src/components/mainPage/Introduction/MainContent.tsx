@@ -79,7 +79,7 @@ function Introduction() {
               </div>
             </div>
             <div className={"w-full h-auto relative"}>
-              <h4 className={"font-fredoka text-4xl"}>Component Upload Option</h4>
+              <h4 className={"font-fredoka text-4xl"}>Component Upload Option.</h4>
               <div className={"w-full h-auto ml-6 relative mt-2"}>
                 <p>
                   Connect your Github account to upload your components directly from your repository, <LinkText
