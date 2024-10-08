@@ -112,9 +112,10 @@ export default function AppNavbar() {
                                                   {
                                                       content[item].map((subItem, subIndex) => {
                                                           return (
-                                                            <HoveredLink href={`/${optimalPath(item)}/${subItem.name}`}
-                                                                         title={item as "Getting Started" | "Components" | "Special Effects"}
-                                                                         key={subIndex}>
+                                                            <HoveredLink
+                                                              href={`/${optimalPath(item)}/${subItem.name.toLowerCase()}`}
+                                                              title={item as "Getting Started" | "Components" | "Special Effects"}
+                                                              key={subIndex}>
                                                                 {subItem.name}
                                                             </HoveredLink>
                                                           );

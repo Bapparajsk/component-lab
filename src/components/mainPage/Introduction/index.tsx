@@ -4,15 +4,7 @@ import { Image } from "@nextui-org/react";
 
 import { LinkText } from "@/components/ui/text-effect";
 
-export const MainContent = ({ path }: { path: string | undefined }) => {
-  switch (path) {
-    case "introduction":
-      return <Introduction />;
-  }
-};
-
-
-function Introduction() {
+export const Introduction = () => {
   return (
     <div className={"w-full h-auto px-20 text-large font-rubik"}>
       <div className={"w-full h-auto mt-4 ml-5"}>

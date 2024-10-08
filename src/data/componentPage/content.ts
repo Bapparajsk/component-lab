@@ -17,6 +17,10 @@ export const content: ContentType = {
   ],
   "Components": [
     {
+      id: 0,
+      name: "All"
+    },
+    {
       id: 1,
       name: "Button"
     },
@@ -42,6 +46,10 @@ export const content: ContentType = {
     }
   ],
   "Special Effects": [
+    {
+      id: 0,
+      name: "All"
+    },
     {
       id: 1,
       name: "Animation"

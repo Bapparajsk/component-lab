@@ -7,7 +7,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
     :root {
         --color-1: 0 100% 63%;

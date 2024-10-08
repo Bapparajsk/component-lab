@@ -3,7 +3,7 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 
-import { MainContent } from "@/components/mainPage/Introduction/MainContent";
+import { Index } from "@/components/mainPage";
 import { Footer } from "@/components/ui/Footer";
 
 function Page() {
@@ -11,7 +11,7 @@ function Page() {
 
   return (
     <div className={"w-full h-auto"}>
-      <MainContent path={pathname.split("/").pop()}/>
+      <Index path={pathname.split("/").pop()}/>
       <Footer />
     </div>
   );

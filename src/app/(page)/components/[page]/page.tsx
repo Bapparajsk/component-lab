@@ -2,13 +2,15 @@
 
 import React from "react";
 
-import { MainContent } from "@/components/mainPage/Introduction/MainContent";
-import { sections } from "@/components/mainPage/Introduction/data";
+import { Footer } from "@/components/ui/Footer";
+import Posts from "@/components/mainPage/postPage";
 
 function Page() {
+
   return (
-    <div>
-      <MainContent sections={sections}/>
+    <div className={"w-full h-auto"}>
+      <Posts  post={""}/>
+      <Footer />
     </div>
   );
 }

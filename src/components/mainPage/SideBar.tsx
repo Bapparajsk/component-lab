@@ -17,7 +17,7 @@ import {
   UploadIcon,
   SettingIcon
 } from "@/icons/animation-icon";
-import { SideBarItem } from "@/components/mainPage/Introduction/SideBarItem";
+import { SideBarItem } from "@/components/mainPage/SideBarItem";
 
 interface LinkProps {
   link: string;
