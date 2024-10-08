@@ -1,20 +1,23 @@
 "use client";
 
-import React from "react";
+import {useState, useMemo} from "react";
 import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import {
-  IconEaseInOutControlPoints,
   IconTableFilled,
-  IconTerminal2,
-  IconTextPlus,
-  IconTimeline,
-  IconUpload,
-  IconUserBolt,
-  IconHeart,
-  IconSettings
 } from "@tabler/icons-react";
-import Link from "next/link";
 import { Key } from "@react-types/shared";
+
+import {
+  AnimateIcon,
+  DashboardIcon,
+  FavoriteIcon,
+  NewIcon,
+  PopularIcon,
+  ProfileIcon,
+  UploadIcon,
+  SettingIcon
+} from "@/icons/animation-icon";
+import { SideBarItem } from "@/components/mainPage/Introduction/SideBarItem";
 
 interface LinkProps {
   link: string;
@@ -25,17 +28,17 @@ interface LinkProps {
 const userLinks: LinkProps[] = [
   {
     link: "/upload",
-    icon: IconUpload,
+    icon: UploadIcon,
     title: "Upload"
   },
   {
     link: "/profile",
-    icon: IconUserBolt,
+    icon: ProfileIcon,
     title: "Profile"
   },
   {
     link: "/dashboard",
-    icon: IconTerminal2,
+    icon: DashboardIcon,
     title: "Dashboard"
   }
 ];
@@ -44,34 +47,34 @@ const postLinked = [
   {
     key: "animated",
     title: "Animated",
-    icon: IconEaseInOutControlPoints,
+    icon: AnimateIcon,
     color: "#006BFF"
   },
   {
     key: "new",
     title: "New",
-    icon: IconTextPlus,
+    icon: NewIcon,
     color: "#73EC8B"
   },
   {
     key: "popular",
     title: "Popular",
-    icon: IconTimeline,
+    icon: PopularIcon,
     color: "#FFF100"
   },
   {
     key: "favorite",
     title: "Favorite",
-    icon: IconHeart,
+    icon: FavoriteIcon,
     color: "#EF5A6F"
   }
 ];
 
 export const SideBar = () => {
 
-  const [selectedKeys, setSelectedKeys] = React.useState<Set<Key> | string>(new Set(["animated"]));
+  const [selectedKeys, setSelectedKeys] = useState<Set<Key> | string>(new Set(["animated"]));
 
-  const selectedValue = React.useMemo(
+  const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(";"),
     [selectedKeys]
   );
@@ -93,17 +96,16 @@ export const SideBar = () => {
         </div>
         <div className={"w-full h-full "}>
           <div className={"w-full h-auto pl-3 py-4 font-Work-Sans"}>
-            {userLinks.map((item, idx) => {
-              return (
-                <div key={idx} className={"w-full h-12 flex items-center justify-start group text-black dark:text-white"}>
-                  <Link href={item.link} className={"w-full h-auto flex items-center justify-start gap-x-1"}>
-                    <item.icon className={"transition-all duration-300 group-hover:scale-125"} />
-                    <span
-                      className={"transition-all duration-300 group-hover:translate-x-2 group-hover:text-blue-500 group-hover:font-bold"}>{item.title}</span>
-                  </Link>
-                </div>
-              );
-            })}
+            {userLinks.map((item) => (
+              <SideBarItem
+                key={item.title}
+                title={item.title}
+                icon={item.icon}
+                link={item.link}
+                color={"auto"}
+                textAnimation={true}
+              />
+            ))}
           </div>
           <hr />
           <div
@@ -119,30 +121,32 @@ export const SideBar = () => {
             >
               {postLinked.map((item) => (
                 <ListboxItem key={item.key} value={item.key} textValue={item.title}>
-                  <div className={"w-full h-8 flex items-center justify-start group"}>
-                    <item.icon
-                      size={20} color={findSelected(item.key) ? item.color : undefined}
-                      className={"duration-400 group-hover:scale-125"} />
-                    <span
-                      className={"pl-2 transition-transform duration-300 group-hover:translate-x-2"}>{item.title}</span>
-                  </div>
+                  <SideBarItem
+                    className={"h-8"}
+                    key={item.title}
+                    title={item.title}
+                    icon={item.icon}
+                    color={item.key === "popular" ? "auto" : ""}
+                  />
                 </ListboxItem>
               ))}
             </Listbox>
           </div>
           <hr />
           <div
-            className={"w-full h-auto font-Work-Sans py-4 text-black dark:text-white"}>
-            <div className={"w-full h-12 flex items-center justify-start group text-black dark:text-white pl-2"}>
-              <Link href={'/setting'} className={"w-full h-auto flex items-center justify-start gap-x-1"}>
-                <IconSettings className={"transition-all duration-300 group-hover:scale-125 group-hover:rotate-45"} />
-                <span
-                  className={"transition-transform duration-300 group-hover:translate-x-2 "}>Setting</span>
-              </Link>
-            </div>
+            className={"w-full h-auto font-Work-Sans py-4 text-black dark:text-white pl-2"}>
+            <SideBarItem
+              title={"Setting"}
+              icon={SettingIcon}
+              link={"/setting"}
+              textAnimation={true}
+              color={"auto"}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+
