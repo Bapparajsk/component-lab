@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-// import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 import {User, Link, Tooltip, Button} from "@nextui-org/react";
 import { IconHeart, IconHeartFilled, IconCode, IconCreditCard } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,14 +10,19 @@ import { ToolTipCard } from "@/components/mainPage/postPage/ToolTipCard";
 const MotionIconHeart = motion.create(IconHeart);
 const MotionIconHeartFilled = motion.create(IconHeartFilled);
 
-export const Card = () => {
+export const Card = ({
+  containerHeight,
+}:{
+  containerHeight: number;
+}) => {
   const [mood, setMood] = useState<"preview" | "code">("preview");
   const [likeCount, setLikeCount] = useState<number>(100);
   const [liked, setLiked] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <div className={"w-full xl:w-[49%] h-auto border p-5 rounded-md flex flex-col gap-y-3"}>
+    <div className={"w-full border grow p-5 rounded-md flex flex-col gap-y-3"}
+         >
       <div className={"w-full h-auto flex items-center justify-between"}>
         <Tooltip
           className={"cursor-pointer"}
@@ -28,18 +32,20 @@ export const Card = () => {
           motionProps={{
             variants: {
               exit: {
+                scale: 0.8,
                 opacity: 0,
                 transition: {
-                  duration: 0.1,
+                  duration: 0.2,
                   ease: "easeIn",
-                }
+                },
               },
               enter: {
+                scale: 1,
                 opacity: 1,
                 transition: {
-                  duration: 0.15,
+                  duration: 0.2,
                   ease: "easeOut",
-                }
+                },
               },
             },
           }}
@@ -52,7 +58,7 @@ export const Card = () => {
               </Link>
             )}
             avatarProps={{
-              src: "https://avatars.githubusercontent.com/u/30373425?v=4"
+              src: "https://avatars.githubusercontent.com/u/30373425?v=4",
             }}
           />
         </Tooltip>
@@ -69,26 +75,29 @@ export const Card = () => {
           }}
         >
           <AnimatePresence>
-            {liked ?
+            {liked ? (
               <MotionIconHeartFilled
-                initial={{ scale: .3, opacity: 0.5 }}
+                initial={{ scale: 0.3, opacity: 0.5 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.2, type: "spring", }}
-                exit={{ scale: .3, opacity: 0.5 }}
+                transition={{ duration: 0.2, type: "spring" }}
+                exit={{ scale: 0.3, opacity: 0.5 }}
                 size={24}
                 color={"red"}
-              /> :
+              />
+            ) : (
               <MotionIconHeart
-                initial={{ scale: .3, opacity: 0.5 }}
+                initial={{ scale: 0.3, opacity: 0.5 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.2, type: "spring", }}
-                exit={{ scale: .3, opacity: 0.5 }}
+                transition={{ duration: 0.2, type: "spring" }}
+                exit={{ scale: 0.3, opacity: 0.5 }}
                 size={24}
-            />}
+              />
+            )}
           </AnimatePresence>
           <span className={"text-[12px]"}>{likeCount}</span>
         </div>
       </div>
+
       <div className={"w-full h-auto flex items-center justify-end gap-x-2"}>
         <Button
           startContent={<IconCreditCard />}
@@ -107,8 +116,12 @@ export const Card = () => {
           Code
         </Button>
       </div>
-      <div className={"w-full h-96 border border-gray-500 rounded-md bg-gray-900/50"}>
-        {mood}
+
+      <div
+        className={`w-full border border-gray-500 rounded-md bg-gray-900/50`}
+        style={{ minHeight: containerHeight }}
+      >
+        {/* Content */}
       </div>
     </div>
   );

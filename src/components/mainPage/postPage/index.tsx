@@ -8,16 +8,6 @@ import { Card } from "@/components/mainPage/postPage/Card";
 function Posts({ post }: { post: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const dummyContent = Array.from({ length: 200 }, (_, i) => (
-    <p key={i} className='pb-4 font-mono text-sm text-zinc-500'>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam
-      lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra
-      nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget
-      libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut
-      porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies
-      a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    </p>
-  ));
 
   return (
     <div className={"w-full h-full p-5"}>
@@ -30,16 +20,35 @@ function Posts({ post }: { post: string }) {
           mass: 0.3,
         }}
       />
-      <div className={"w-full h-full flex flex-wrap lg:gap-2 xl:gap-3"}>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+      <div className={"w-full h-full"}>
+        <div className={"hidden md:inline-block w-1/2  align-top pr-2"}>
+          <div className={"flex flex-col items-start justify-start gap-5"}>
+            <Card containerHeight={200} />
+            <Card containerHeight={400} />
+            <Card containerHeight={50} />
+            <Card containerHeight={200} />
+            <Card containerHeight={300} />
+          </div>
+        </div>
+        <div className={"hidden md:inline-block  w-1/2  align-top pl-2"}>
+          <div className={"flex flex-col items-start justify-center gap-5"}>
+            <Card containerHeight={200} />
+            <Card containerHeight={200} />
+            <Card containerHeight={50} />
+            <Card containerHeight={200} />
+            <Card containerHeight={100} />
+          </div>
+        </div>
+
+        <div className={"inline-block md:hidden w-full align-top pr-2"}>
+          <div className={"flex flex-col items-start justify-start gap-5"}>
+            <Card containerHeight={200} />
+            <Card containerHeight={400} />
+            <Card containerHeight={50} />
+            <Card containerHeight={200} />
+            <Card containerHeight={300} />
+          </div>
+        </div>
       </div>
     </div>
   );
