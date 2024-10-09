@@ -89,4 +89,4 @@ export const Introduction = () => {
       </div>
     </div>
   );
-}
+};

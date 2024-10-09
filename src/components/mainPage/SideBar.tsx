@@ -74,14 +74,14 @@ export const SideBar = () => {
 
   const [selectedKeys, setSelectedKeys] = useState<Set<Key> | string>(new Set(["animated"]));
 
-  const selectedValue = useMemo(
-    () => Array.from(selectedKeys).join(";"),
-    [selectedKeys]
-  );
+  // const selectedValue = useMemo(
+  //   () => Array.from(selectedKeys).join(";"),
+  //   [selectedKeys]
+  // );
 
-  const findSelected = (key: string) => {
-    return selectedValue.includes(key);
-  };
+  // const findSelected = (key: string) => {
+  //   return selectedValue.includes(key);
+  // };
 
   return (
     <div className={"sticky top-20 left-0"}>
@@ -94,7 +94,7 @@ export const SideBar = () => {
             <span>Component Lab</span>
           </div>
         </div>
-        <div className={"w-full h-full "}>
+        <div className={"w-full h-full"}>
           <div className={"w-full h-auto pl-3 py-4 font-Work-Sans"}>
             {userLinks.map((item) => (
               <SideBarItem
@@ -107,7 +107,7 @@ export const SideBar = () => {
               />
             ))}
           </div>
-          <hr />
+          <div className={"w-full h-[1px] bg-gray-600"} />
           <div
             className={"w-full h-auto font-Work-Sans py-4 text-black dark:text-white"}>
             <Listbox
@@ -132,7 +132,7 @@ export const SideBar = () => {
               ))}
             </Listbox>
           </div>
-          <hr />
+          <div className={"w-full h-[1px] bg-gray-600"} />
           <div
             className={"w-full h-auto font-Work-Sans py-4 text-black dark:text-white pl-2"}>
             <SideBarItem

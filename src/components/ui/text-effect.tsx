@@ -9,7 +9,6 @@ export const LinkText = ({
   color,
   href,
   space = true,
-  brickLine = false,
   endContent,
   className
 }: {
@@ -17,7 +16,6 @@ export const LinkText = ({
   color?: string;
   href?: string;
   space?: boolean;
-  brickLine?: boolean;
   endContent?: ReactNode;
   className?: string
 }) => {

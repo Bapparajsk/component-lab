@@ -15,7 +15,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     useEffect(() => {
         // Check for stored theme
         const storedTheme = localStorage.getItem('theme');
-        if (storedTheme) {
+        if (storedTheme != null) {
             setTheme(storedTheme as "light" | "dark");
             document.documentElement.classList.add(storedTheme);
         }

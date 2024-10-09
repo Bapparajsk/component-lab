@@ -23,20 +23,20 @@ function Posts({ post }: { post: string }) {
       <div className={"w-full h-full"}>
         <div className={"hidden md:inline-block w-1/2  align-top pr-2"}>
           <div className={"flex flex-col items-start justify-start gap-5"}>
-            <Card containerHeight={200} />
+            <Card containerHeight={500} />
             <Card containerHeight={400} />
-            <Card containerHeight={50} />
-            <Card containerHeight={200} />
+            <Card containerHeight={500} />
+            <Card containerHeight={250} />
             <Card containerHeight={300} />
           </div>
         </div>
         <div className={"hidden md:inline-block  w-1/2  align-top pl-2"}>
           <div className={"flex flex-col items-start justify-center gap-5"}>
-            <Card containerHeight={200} />
-            <Card containerHeight={200} />
-            <Card containerHeight={50} />
-            <Card containerHeight={200} />
-            <Card containerHeight={100} />
+            <Card containerHeight={400} isLeft={false}/>
+            <Card containerHeight={600} isLeft={false}/>
+            <Card containerHeight={300} isLeft={false}/>
+            <Card containerHeight={300} isLeft={false}/>
+            <Card containerHeight={300} isLeft={false}/>
           </div>
         </div>
 

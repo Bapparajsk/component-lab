@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import {User, Link, Tooltip, Button} from "@nextui-org/react";
 import { IconHeart, IconHeartFilled, IconCode, IconCreditCard } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 
 import { ToolTipCard } from "@/components/mainPage/postPage/ToolTipCard";
 
@@ -12,17 +12,27 @@ const MotionIconHeartFilled = motion.create(IconHeartFilled);
 
 export const Card = ({
   containerHeight,
+  isLeft = true,
 }:{
   containerHeight: number;
+  isLeft?: boolean;
 }) => {
   const [mood, setMood] = useState<"preview" | "code">("preview");
   const [likeCount, setLikeCount] = useState<number>(100);
   const [liked, setLiked] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, }).valueOf();
 
   return (
-    <div className={"w-full border grow p-5 rounded-md flex flex-col gap-y-3"}
-         >
+    <div
+      className={"w-full border border-gray-600 p-5 rounded-md flex flex-col gap-y-3"}
+      ref={ref}
+      style={{
+        transform: isInView ? "translateX(0) translateY(0)" : `translateX(${isLeft ? "-" : ""}100px) translateY(100px)`,
+        opacity: isInView ? 1 : 0,
+        transition: "all .5s cubic-bezier(0.000,-0.600,1.000,1.650)",
+      }}
+    >
       <div className={"w-full h-auto flex items-center justify-between"}>
         <Tooltip
           className={"cursor-pointer"}
@@ -63,7 +73,6 @@ export const Card = ({
           />
         </Tooltip>
         <div
-          ref={ref}
           className={"relative w-auto h-auto overflow-visible transition-colors duration-700 flex flex-col items-center justify-center cursor-pointer"}
           onClick={() => {
             if (liked) {
@@ -118,10 +127,10 @@ export const Card = ({
       </div>
 
       <div
-        className={`w-full border border-gray-500 rounded-md bg-gray-900/50`}
+        className={`w-full border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50`}
         style={{ minHeight: containerHeight }}
       >
-        {/* Content */}
+
       </div>
     </div>
   );
