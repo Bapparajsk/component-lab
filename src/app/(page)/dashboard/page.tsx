@@ -6,13 +6,18 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Card, CardHeader, CardBody, CardFooter, Divider, Image
+  Card, 
+  CardHeader, 
+  CardBody, 
+  CardFooter, 
+  Divider
 } from "@nextui-org/react";
 import { IconBell } from "@tabler/icons-react";
 import Link from "next/link";
 
 import { SideBarItem } from "@/components/mainPage/SideBarItem";
 import { EmailIcon, PasswordIcon, LogoutIcon } from "@/icons/animation-icon";
+import { Notiftion } from "@/components/mainPage/dashboard/index";
 
 const Page = () => {
 
@@ -64,22 +69,23 @@ const Page = () => {
             </PopoverTrigger>
             <PopoverContent className={"p-1"}>
               <Card className={"max-w-[400px]"}>
-                <CardHeader className={"flex gap-3"}>
-                  <Image
-                    alt={"nextui logo"}
-                    height={40}
-                    radius={"sm"}
-                    src={"https://avatars.githubusercontent.com/u/86160567?s=200&v=4"}
-                    width={40}
-                  />
-                  <div className={"flex flex-col"}>
-                    <p className={"text-md"}>NextUI</p>
-                    <p className={"text-small text-default-500"}>nextui.org</p>
+                <CardHeader className={"flex "}>
+                  <div className={"absolute right-2 cursor-pointer"}>
+                    <Link href={"/user/notiftion"} className={"relative group text-blue-600 flex"}>
+                      <span className={"transition-color duration-300 group-hover:text-blue-500"}>View all</span>
+                      <span
+                        className={"absolute left-0 bottom-0 w-full h-0.5 bg-blue-600 transition-all duration-300 scale-x-0 group-hover:scale-x-100 origin-left"}
+                      ></span>
+                    </Link>
                   </div>
                 </CardHeader>
-                <Divider />
                 <CardBody>
-                  <p>Make beautiful websites regardless of your design experience.</p>
+                  <Notiftion
+                    img={"https://i.pravatar.cc/150?u=a04258114e29026702d"}
+                    name={"John Doe"}
+                    username={"@johndoe"}
+                    body={"lorem ipsum dolor sit amet, co  labore et dolo dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna alre magna aliqua."}
+                  />
                 </CardBody>
                 <Divider />
                 <CardFooter>
