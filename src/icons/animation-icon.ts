@@ -6,6 +6,9 @@ import PopularIcon from './popular-icon.json';
 import ProfileIcon from './profile-icon.json';
 import UploadIcon from './upload-Icon.json';
 import SettingIcon from './setting-icon.json';
+import EmailIcon from './email-icon.json';
+import PasswordIcon from './password-icon.json';
+import LogoutIcon from './logout-icon.json';
 
 export {
   AnimateIcon,
@@ -15,5 +18,8 @@ export {
   PopularIcon,
   ProfileIcon,
   UploadIcon,
-  SettingIcon
+  SettingIcon,
+  EmailIcon,
+  PasswordIcon,
+  LogoutIcon
 };

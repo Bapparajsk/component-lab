@@ -6,15 +6,17 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-export const  SideBarItem = ({
-                        title,
-                        icon,
-                        link,
-                        className,
-                        color = "",
-                        titleClassName,
-                        textAnimation,
-                      } : {
+export const SideBarItem = ({
+  title,
+  icon,
+  link,
+  className,
+  color = "",
+  titleClassName,
+  textAnimation,
+  linkClassName,
+  onClick,
+}: {
   title: string;
   icon: object;
   link?: string;
@@ -22,6 +24,8 @@ export const  SideBarItem = ({
   color?: "auto" | "";
   titleClassName?: string;
   textAnimation?: boolean;
+  linkClassName?: string;
+  onClick?: () => void;
 }) => {
   const playerRef = useRef<Player>(null);
   return (
@@ -30,8 +34,9 @@ export const  SideBarItem = ({
       onMouseEnter={() => {
         playerRef.current?.playFromBeginning();
       }}
+      onClick={onClick}
     >
-      <Link href={link || ""} className={"w-full h-auto flex items-center justify-start gap-x-2"}>
+      <Link href={link || ""} className={cn("w-full h-auto flex items-center justify-start gap-x-2", linkClassName)}>
         <div className={"transition-transform duration-300 group-hover:scale-125"}>
           <Player
             icon={icon}
