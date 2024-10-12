@@ -127,7 +127,7 @@ export default function TopNav() {
                     <PopoverTrigger>
                         <Avatar
                             className={" transition-transform duration-300 cursor-pointer hover:scale-110"}
-                            src={"https://i.pravatar.cc/150?u=a04258114e29026702d"}
+                            src={"https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg"}
                         />
                     </PopoverTrigger>
                     <PopoverContent className={"p-1"}>
