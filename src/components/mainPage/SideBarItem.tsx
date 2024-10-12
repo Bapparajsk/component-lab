@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 export const SideBarItem = ({
   title,
   icon,
+  iconSize,
   link,
   className,
   color = "",
@@ -19,6 +20,7 @@ export const SideBarItem = ({
 }: {
   title: string;
   icon: object;
+  iconSize?: number;
   link?: string;
   className?: string;
   color?: "auto" | "";
@@ -41,7 +43,7 @@ export const SideBarItem = ({
           <Player
             icon={icon}
             ref={playerRef}
-            size={26}
+            size={iconSize || 26}
             colorize={color}
           />
         </div>

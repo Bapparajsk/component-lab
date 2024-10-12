@@ -9,6 +9,7 @@ import SettingIcon from './setting-icon.json';
 import EmailIcon from './email-icon.json';
 import PasswordIcon from './password-icon.json';
 import LogoutIcon from './logout-icon.json';
+import SeeAllIcon from './seeAll-icon.json';
 
 export {
   AnimateIcon,
@@ -21,5 +22,6 @@ export {
   SettingIcon,
   EmailIcon,
   PasswordIcon,
-  LogoutIcon
+  LogoutIcon,
+  SeeAllIcon
 };
