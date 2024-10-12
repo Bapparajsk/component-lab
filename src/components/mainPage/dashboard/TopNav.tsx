@@ -37,14 +37,14 @@ export default function TopNav() {
     ], []);
 
     return (
-        <div className={"flex h-20 w-full items-center justify-end gap-x-6 px-6 max-w-[1000px]"}>
+        <div className={"h-20 w-full max-w-[150px] flex items-center justify-end gap-x-6 px-6 "}>
             <div className={"h-fit w-fit"}>
                 <Popover
                     showArrow={true}
                     classNames={{
                         base: [
                             // arrow color
-                            "before:bg-default-200",
+                            "before:bg-default-200 mt-2",
                         ],
                         content: [
                             "py-3 px-4 border border-default-200",
@@ -115,7 +115,7 @@ export default function TopNav() {
                     classNames={{
                         base: [
                             // arrow color
-                            "before:bg-default-200",
+                            "before:bg-default-200 mt-2",
                         ],
                         content: [
                             "py-3 px-4 border border-default-200",
