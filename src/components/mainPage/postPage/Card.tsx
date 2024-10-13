@@ -13,9 +13,11 @@ const MotionIconHeartFilled = motion.create(IconHeartFilled);
 export const Card = ({
   containerHeight,
   isLeft = true,
+  setAnimation = true,
 }:{
   containerHeight: number;
   isLeft?: boolean;
+  setAnimation?: boolean;
 }) => {
   const [mood, setMood] = useState<"preview" | "code">("preview");
   const [likeCount, setLikeCount] = useState<number>(100);
@@ -27,11 +29,11 @@ export const Card = ({
     <div
       className={"w-full border border-gray-600 p-5 rounded-md flex flex-col gap-y-3"}
       ref={ref}
-      style={{
+      style={setAnimation ? {
         transform: isInView ? "translateX(0) translateY(0)" : `translateX(${isLeft ? "-" : ""}100px) translateY(100px)`,
         opacity: isInView ? 1 : 0,
         transition: "all .5s cubic-bezier(0.000,-0.600,1.000,1.650)",
-      }}
+      }: {}}
     >
       <div className={"w-full h-auto flex items-center justify-between"}>
         <Tooltip
