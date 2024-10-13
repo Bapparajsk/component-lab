@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import {User, Link, Tooltip, Button} from "@nextui-org/react";
-import { IconHeart, IconHeartFilled, IconCode, IconCreditCard } from "@tabler/icons-react";
+import { User, Tooltip, Button } from "@nextui-org/react";
+import { IconHeart, IconHeartFilled, IconCode, IconCreditCard, IconCodeDots } from "@tabler/icons-react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import { ToolTipCard } from "@/components/mainPage/postPage/ToolTipCard";
 
@@ -14,16 +15,20 @@ export const Card = ({
   containerHeight,
   isLeft = true,
   setAnimation = true,
-}:{
+  editButton = false
+}: {
   containerHeight: number;
   isLeft?: boolean;
   setAnimation?: boolean;
+  editButton?: boolean;
 }) => {
   const [mood, setMood] = useState<"preview" | "code">("preview");
   const [likeCount, setLikeCount] = useState<number>(100);
   const [liked, setLiked] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, }).valueOf();
+  const router = useRouter();
+
 
   return (
     <div
@@ -33,7 +38,7 @@ export const Card = ({
         transform: isInView ? "translateX(0) translateY(0)" : `translateX(${isLeft ? "-" : ""}100px) translateY(100px)`,
         opacity: isInView ? 1 : 0,
         transition: "all .5s cubic-bezier(0.000,-0.600,1.000,1.650)",
-      }: {}}
+      } : {}}
     >
       <div className={"w-full h-auto flex items-center justify-between"}>
         <Tooltip
@@ -65,9 +70,9 @@ export const Card = ({
           <User
             name={"Junior Garcia"}
             description={(
-              <Link href={"https://twitter.com/jrgarciadev"} size={"sm"} isExternal={true}>
+              <p className={"text-blue-400 text-[12px]"}>
                 @jrgarciadev
-              </Link>
+              </p>
             )}
             avatarProps={{
               src: "https://avatars.githubusercontent.com/u/30373425?v=4",
@@ -126,8 +131,15 @@ export const Card = ({
         >
           Code
         </Button>
+        {editButton && <Button
+          startContent={<IconCodeDots />}
+          variant={"ghost"}
+          color={"success"}
+          onPress={() => router.push("/dashboard/edit/id")}
+        >
+          Edit
+        </Button>}
       </div>
-
       <div
         className={`w-full border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50`}
         style={{ minHeight: containerHeight }}

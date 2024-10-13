@@ -34,7 +34,7 @@ export const ToolTipCard = () => {
         </p>
         <span className={"pt-2"}>
           #FrontendWithZoey
-          <span className={"py-2"} aria-label={"computer"} role={"img"}>
+          <span className={"py-2"} aria-label={"computer"}>
             💻
           </span>
         </span>

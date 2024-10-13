@@ -47,7 +47,7 @@ const Page = () => {
         <div className={"w-full h-full"}>
           <div className={"hidden md:inline-block w-1/2  align-top pr-2"}>
             <div className={"flex flex-col items-start justify-start gap-5"}>
-              <Card containerHeight={500} setAnimation={false}/>
+              <Card containerHeight={500} setAnimation={false} editButton={true}/>
               <Card containerHeight={400} setAnimation={false}/>
               <Card containerHeight={500} setAnimation={false}/>
               <Card containerHeight={250} setAnimation={false}/>
