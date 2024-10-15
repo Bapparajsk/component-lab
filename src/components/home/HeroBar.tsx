@@ -1,9 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { IconChevronRight, IconBrandNextjs, IconBrandReact, IconBrandTailwind, IconBrandFramerMotion } from "@tabler/icons-react";
+import {
+    IconBrandFramerMotion,
+    IconBrandNextjs,
+    IconBrandReact,
+    IconBrandTailwind,
+    IconChevronRight
+} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import StarsBackground from "@/components/ui/background";
@@ -42,7 +49,6 @@ export const HeroBar = () => {
                 ease={80}
                 color={starColor}
                 refresh={true}
-
             />
             <div className={"flex items-center mb-3 mt-10 justify-center z-10"}>
                 <AnimatedGradientText>
@@ -102,18 +108,55 @@ export const HeroBar = () => {
                 </div>
             </div>
             <div
-                className={`relative mt-20 animate-fade-up opacity-0 [--animation-delay:400ms] [perspective:2000px] after:absolute after:inset-0 after:z-50 after:[background:linear-gradient(to_top,hsl(var(--background))_30%,transparent)] before:animate-image-glow flex items-start justify-center`}>
-                <div
-                    className={"rounded-xl border border-black/10 dark:border-white/10  bg-white hero bg-opacity-[0.01] "}>
+                className={`relative mt-20 animate-fade-up opacity-0 [--animation-delay:400ms] [perspective:2000px] after:absolute after:inset-0 after:z-50 after:[background:linear-gradient(to_top,hsl(var(--background))_30%,transparent)] before:animate-image-glow flex items-start justify-center`}
+            >
+                <div  className={"rounded-xl border border-black/10 dark:border-white/10  bg-white hero bg-opacity-[0.01] "}>
                     <BorderBeam size={200} duration={12} delay={9} />
                     <Image
-                        src={"/images/hero-bar-dark.png"}
-                        alt={"HeroDarkImage"}
-                        className={"relative hidden size-full rounded-[inherit] object-contain dark:block"}
+                      src={"/images/hero-bar-dark.png"}
+                      alt={"HeroDarkImage"}
+                      className={"relative hidden size-full rounded-[inherit] object-contain dark:block"}
                     />
                     <Image src={"/images/hero-bar-light.png"} alt={"HeroLightImage"}
-                        className={"relative block size-full rounded-[inherit] object-contain dark:hidden"} />
-                </div>  {/*shadow-[0_-50px_10000px_10px_rgba(255,166,0,0.6)]*/}
+                           className={"relative block size-full rounded-[inherit] object-contain dark:hidden"} />
+                </div>
+                <AnimatePresence mode={"wait"}>
+                    {theme === "dark" ? (
+                      <motion.div
+                        key={"dark"}
+                        initial={{ y: 50, scale: 0 }}
+                        animate={{ y: 0, scale: 1 }}
+                        exit={{ y: 50, opacity: 0, scale: 0 }}
+                        transition={{ type: "spring", duration: .5 }}
+
+                        className={"absolute w-[70%] h-[80%] -top-10 bg-[#F4D9A9] rounded-[50%]"}
+                      >
+                          <motion.div
+                            initial={{ boxShadow: "0 0 0 0 rgba(255,255,255,0.0)" }}
+                            animate={{ boxShadow: "0 0 600px 50px rgba(255,255,255,0.5)" }}
+                            transition={{ type: "spring", duration: .5, delay: 0.2 }}
+                            className={"w-full h-full absolute rounded-[50%] -z-10 shadow-[0_0_600px_50px_rgba(255,255,255,0.5)]"}>
+                          </motion.div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key={"light"}
+                        initial={{ y: 50, scale: 0 }}
+                        animate={{ y: 0, scale: 1 }}
+                        exit={{ y: 50, opacity: 0, scale: 0 }}
+                        transition={{ type: "spring", duration: .5 }}
+                        className={"absolute w-[70%] h-[80%] -top-10 bg-[#FAC668] rounded-[50%]"}
+                      >
+                          <motion.div
+                            initial={{ boxShadow: "0 0 60px 30px rgba(255, 215, 0, 0.0)" }}
+                            animate={{ boxShadow: "0 0 600px 50px rgba(255, 215, 0, 0.5)" }}
+                            exit={{ y: 50, opacity: 0, scale: 0 }}
+                            transition={{ type: "spring", duration: .5, delay: 0.2 }}
+                            className={"w-full h-full absolute rounded-[50%] -z-10 shadow-[0_0_600px_50px_rgba(255,255,255,0.5)]"}>
+                          </motion.div>
+                      </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
