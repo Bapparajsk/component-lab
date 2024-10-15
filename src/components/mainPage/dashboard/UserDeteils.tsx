@@ -27,12 +27,12 @@ export default function UserDeteils() {
                         <div className={"h-full font-rubik  flex flex-col items-start justify-between"}>
                             <p className={"text-4xl "}>Bapparajsk</p>
                             <p className={"text-2xl text-gray-500"}>@Bapparaj007 · he/him</p>
-                            <p className={"text-medium"}>
+                            <p className={"text-medium text-gray-800 dark:text-gray-400"}>
                                 I am Full Stack Web Developer | Passionate about DSA | 2 Years of
                                 Experience in Web Development and DSA Enthusiast
                                 | HTML, CSS, JS, React, Next.js
                             </p>
-                            <Button fullWidth={true} className={"tracking-wide border-2 border-gray-600"} color={"default"} variant={"faded"}>
+                            <Button fullWidth={true} className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
                                 Edit Profile
                             </Button>
                         </div>
@@ -42,21 +42,21 @@ export default function UserDeteils() {
             <div className={"w-full h-full flex "}>
                 <div className={"w-3/5 h-full flex items-center"}>
                     <div className={"w-full h-72 flex flex-col"}>
-                        <div className={"w-full h-24 flex items-center justify-evenly border-b border-gray-600 font-rubik"}>
+                        <div className={"w-full h-36 flex items-center justify-evenly border-b border-gray-600 font-rubik"}>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center "}>
-                                <p className={"text-2xl"}>Tweets</p>
+                                <p className={"text-2xl font-bold"}>Tweets</p>
                                 <p>10</p>
                             </div>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center"}>
-                                <p className={"text-2xl"}>Following</p>
+                                <p className={"text-2xl font-bold"}>Following</p>
                                 <p>100</p>
                             </div>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center"}>
-                                <p className={"text-2xl"}>Followers</p>
+                                <p className={"text-2xl font-bold"}>Followers</p>
                                 <p>168K</p>
                             </div>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center"}>
-                                <p className={"text-2xl"}>Likes</p>
+                                <p className={"text-2xl font-bold"}>Likes</p>
                                 <p>67M</p>
                             </div>
                         </div>
@@ -79,14 +79,6 @@ export default function UserDeteils() {
                             />
                             <UserLinke
                                 link={"https://github.com/Badfufdfpparsdfisdfgjddfiguhrgheriojdfsdkfsodfjquiweddfsdfsdfsdfsdffuigdfgaj007"}
-                                icon={<IconLink />}
-                            />
-                            <UserLinke
-                                link={"https://githsdfjsdfjparaj007"}
-                                icon={<IconLink />}
-                            />
-                            <UserLinke
-                                link={"https://githsdfjksdfjkparaj007"}
                                 icon={<IconLink />}
                             />
                         </div>
@@ -133,7 +125,7 @@ function UserLinke({
             {icon}
             <p
                 onClick={() => { window.open(link, "_blank"); }}
-                className={cn("cursor-pointer group-hover:underline group-hover:text-blue-500 text-sm", linkClassName)}>
+                className={cn("cursor-pointer group-hover:underline group-hover:text-blue-500 text-sm text-gray-800 dark:text-gray-500", linkClassName)}>
                 {link.length > 65 ? `${link.slice(0, 65)}...` : link}
             </p>
         </div>

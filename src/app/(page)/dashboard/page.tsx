@@ -1,7 +1,14 @@
-import React from 'react';
+"use client";
 
-export default function page() {
+const Page = () => {
   return (
-    <div>page</div>
+    <div className={"w-full h-auto"}>
+      <div className={""}>
+
+      </div>
+    </div>
   );
-}
+};
+
+
+export default Page;

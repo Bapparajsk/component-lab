@@ -26,13 +26,13 @@ export const Footer = () => {
         <p className={""}>© 2024 Component Lab</p>
       </div>
       <div className={"flex gap-3"}>
-        <LinkPreview  url={"/images/hero-bar-dark.png"} className={"font-bold"}>
+        <LinkPreview url={"/"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
           portfolio
         </LinkPreview>
-        <LinkPreview  url={"/images/hero-bar-dark.png"} className={"font-bold"}>
+        <LinkPreview url={"https://bapparaj.me"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
           Product
         </LinkPreview>
-        <LinkPreview  url={"/images/hero-bar-dark.png"} className={"font-bold"}>
+        <LinkPreview url={"https://bapparaj.me"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
           Quiz Game
         </LinkPreview>
       </div>

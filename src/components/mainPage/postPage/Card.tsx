@@ -129,7 +129,7 @@ export const Card = ({
           color={mood === "code" ? "primary" : "secondary"}
           onPress={() => setMood("code")}
         >
-          Code
+          View Code
         </Button>
         {editButton && <Button
           startContent={<IconCodeDots />}

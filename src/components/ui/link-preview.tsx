@@ -1,7 +1,7 @@
 "use client";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import Image from "next/image";
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 
 type LinkPreviewProps = {
   children: React.ReactNode;
+  imgurl: string;
   url: string;
   className?: string;
   width?: number;
@@ -23,21 +24,22 @@ type LinkPreviewProps = {
 };
 
 export const LinkPreview = ({
-                              children,
-                              url,
-                              className,
-                              width = 200,
-                              height = 125,
-                              quality = 50,
-                              layout = "fixed",
-                            }: LinkPreviewProps) => {
-  const src = url;
+  children,
+  imgurl,
+  url,
+  className,
+  width = 200,
+  height = 125,
+  quality = 50,
+  layout = "fixed",
+}: LinkPreviewProps) => {
+  const src = imgurl;
 
-  const [isOpen, setOpen] = React.useState(false);
+  const [isOpen, setOpen] = useState(false);
 
-  const [isMounted, setIsMounted] = React.useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsMounted(true);
   }, []);
 
@@ -79,9 +81,11 @@ export const LinkPreview = ({
         <HoverCardPrimitive.Trigger
           onMouseMove={handleMouseMove}
           className={cn("text-black dark:text-white", className)}
-          href={url}
         >
-          {children}
+          <Link href={url}
+            target={url?.startsWith("https://") ? "_blank" : "_self"}>
+            {children}
+          </Link>
         </HoverCardPrimitive.Trigger>
 
         <HoverCardPrimitive.Content
@@ -111,9 +115,9 @@ export const LinkPreview = ({
                 }}
               >
                 <Link
-                  href={url}
+                  target={url?.startsWith("https://") ? "_blank" : "_self"}
+                  href={url || ""}
                   className={"block p-1 bg-white border-2 border-transparent shadow rounded-xl hover:border-neutral-200 dark:hover:border-neutral-800"}
-                  style={{ fontSize: 0 }}
                 >
                   <Image
                     src={src}

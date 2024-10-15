@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import TopNav from "@/components/mainPage/dashboard/TopNav";
 import UserDeteils from "@/components/mainPage/dashboard/UserDeteils";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
@@ -43,7 +41,18 @@ const Page = () => {
       <div className={"w-auto h-auto"}>
         <UserDeteils />
       </div>
-      <div className={"w-full h-auto p-5"}>
+      <div className={"w-full h-16 border-b border-gray-600  mb-5 flex items-center justify-between px-10"}>
+        <div className={"w-auto h-auto"}>
+          Pots
+        </div>
+        <div className={"w-auto h-auto"}>
+          
+        </div>
+        <div className={"w-auto h-auto"}>
+          Sort
+        </div>
+      </div>
+      <div className={"w-full h-auto px-5"}>
         <div className={"w-full h-full"}>
           <div className={"hidden md:inline-block w-1/2  align-top pr-2"}>
             <div className={"flex flex-col items-start justify-start gap-5"}>

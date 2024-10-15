@@ -24,7 +24,7 @@ export const Notiftion = ({
   return (
     <figure
       className={cn(
-        "relative w-80 cursor-pointer overflow-hidden rounded-xl border p-4 group transition-all duration-300",
+        "relative w-full cursor-pointer overflow-hidden rounded-xl border p-4 group transition-all duration-300",
         // light styles
         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
         // dark styles
