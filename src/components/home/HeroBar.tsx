@@ -128,12 +128,12 @@ export const HeroBar = () => {
                         animate={{ y: 0, scale: 1 }}
                         exit={{ y: 50, opacity: 0, scale: 0 }}
                         transition={{ type: "spring", duration: .5 }}
-
                         className={"absolute w-[70%] h-[80%] -top-10 bg-[#F4D9A9] rounded-[50%]"}
                       >
                           <motion.div
                             initial={{ boxShadow: "0 0 0 0 rgba(255,255,255,0.0)" }}
                             animate={{ boxShadow: "0 0 600px 50px rgba(255,255,255,0.5)" }}
+                            exit={{ y: 50, opacity: 0, scale: 0 }}
                             transition={{ type: "spring", duration: .5, delay: 0.2 }}
                             className={"w-full h-full absolute rounded-[50%] -z-10 shadow-[0_0_600px_50px_rgba(255,255,255,0.5)]"}>
                           </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import {
   AnimatePresence,
   motion,
@@ -9,11 +9,12 @@ import {
   useSpring,
 } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
 type LinkPreviewProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   imgurl: string;
   url: string;
   className?: string;
@@ -36,8 +37,8 @@ export const LinkPreview = ({
   const src = imgurl;
 
   const [isOpen, setOpen] = useState(false);
-
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
@@ -53,6 +54,14 @@ export const LinkPreview = ({
     const eventOffsetX = event.clientX - targetRect.left;
     const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2; // Reduce the effect to make it subtle
     x.set(offsetFromCenter);
+  };
+
+  const handleClicked = () => {
+    if (url?.startsWith("https://")) {
+      window.open(url, "_blank");
+    } else {
+      router.push(url);
+    }
   };
 
   return (
@@ -80,12 +89,13 @@ export const LinkPreview = ({
       >
         <HoverCardPrimitive.Trigger
           onMouseMove={handleMouseMove}
-          className={cn("text-black dark:text-white", className)}
+          className={cn("text-black dark:text-white cursor-pointer", className)}
         >
-          <Link href={url}
-            target={url?.startsWith("https://") ? "_blank" : "_self"}>
+          <span
+            onClick={handleClicked}
+          >
             {children}
-          </Link>
+          </span>
         </HoverCardPrimitive.Trigger>
 
         <HoverCardPrimitive.Content
