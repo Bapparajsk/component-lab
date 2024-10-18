@@ -1,10 +1,8 @@
 "use client";
 
-import {useState, useMemo} from "react";
+import { useState } from "react";
 import { Listbox, ListboxItem } from "@nextui-org/listbox";
-import {
-  IconTableFilled,
-} from "@tabler/icons-react";
+import { IconTableFilled } from "@tabler/icons-react";
 import { Key } from "@react-types/shared";
 
 import {
@@ -14,8 +12,8 @@ import {
   NewIcon,
   PopularIcon,
   ProfileIcon,
-  UploadIcon,
-  SettingIcon
+  SettingIcon,
+  UploadIcon
 } from "@/icons/animation-icon";
 import { SideBarItem } from "@/components/mainPage/SideBarItem";
 

@@ -5,7 +5,7 @@ import {useRef} from "react";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { Card } from "@/components/mainPage/postPage/Card";
 
-function Posts({ post }: { post: string }) {
+function Posts() {
   const containerRef = useRef<HTMLDivElement>(null);
 
 

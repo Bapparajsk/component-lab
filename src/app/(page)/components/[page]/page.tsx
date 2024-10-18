@@ -9,7 +9,7 @@ function Page() {
 
   return (
     <div className={"w-full h-auto"}>
-      <Posts  post={""}/>
+      <Posts  />
       <Footer />
     </div>
   );

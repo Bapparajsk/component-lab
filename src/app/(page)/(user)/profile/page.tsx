@@ -2,8 +2,6 @@
 
 import UserDetails from "@/components/mainPage/profile/UserDeteils";
 import { Card } from "@/components/mainPage/postPage/Card";
-import { Footer } from "@/components/ui/Footer";
-
 
 const Page = () => {
 
