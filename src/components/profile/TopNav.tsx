@@ -15,7 +15,7 @@ import { IconBell } from "@tabler/icons-react";
 
 import { SideBarItem } from "@/components/mainPage/SideBarItem";
 import { EmailIcon, PasswordIcon, LogoutIcon, SeeAllIcon } from "@/icons/animation-icon";
-import { Notiftion } from "@/components/mainPage/profile/index";
+import { Notiftion } from "@/components/profile/index";
 
 export default function TopNav() {
 

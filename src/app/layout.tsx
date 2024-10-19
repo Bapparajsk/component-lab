@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import {QueryProvider} from "@/app/QueryClientProvider";
 import {ThemeProvider} from "@/context/ThemeContext";
-import AppNavbar from "@/components/navbar/indev";
+import { AppNavbar } from "@/components/navbar";
 import { LocationProvider } from "@/context/LocationContext";
 
 import {Providers} from "./providers";

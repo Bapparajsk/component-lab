@@ -3,10 +3,9 @@
 import { Button, Input, Pagination } from "@nextui-org/react";
 import { IconBookUpload } from "@tabler/icons-react";
 
-import { PostCard } from "@/components/dashboard/PostCard";
-import QueryButton from "@/components/dashboard/QueryButton";
+import { PostCard, QueryButton } from "@/components/dashboard";
 
-export const UploadOption = () => {
+export const ComponentList = () => {
 
   return (
     <div className={"w-full h-auto py-4 px-3 flex gap-x-2 flex-col items-center"}>

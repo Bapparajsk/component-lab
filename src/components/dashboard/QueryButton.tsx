@@ -1,3 +1,5 @@
+"use client";
+
 import { Key, memo, useState } from "react";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { IconCaretDownFilled } from "@tabler/icons-react";

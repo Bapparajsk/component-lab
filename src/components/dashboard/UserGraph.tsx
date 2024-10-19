@@ -3,7 +3,7 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 
-import { GraphLayout } from "@/components/dashboard/GraphLayout";
+import { GraphLayout } from "@/components/dashboard";
 
 export const UserGraph = () => {
 

@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 
-import TopNav from "@/components/mainPage/profile/TopNav";
+import TopNav from "@/components/profile/TopNav";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { Footer } from "@/components/ui/Footer";
 

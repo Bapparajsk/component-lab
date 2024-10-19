@@ -17,9 +17,8 @@ import { IconTableFilled, IconBrandGithub, IconBrandLinkedin } from '@tabler/ico
 import { SearchIcon } from "@nextui-org/shared-icons";
 import Link from "next/link";
 
-import { TolContent } from "@/components/navbar/TolContent";
-import { ThemeToggleButton } from "@/components/navbar/ThemeToggle";
-import { HoveredLink, Menu, MenuItem } from "@/components/mainPage/dropdown";
+import { TolContent, ThemeToggleButton } from "@/components/navbar";
+import { HoveredLink, Menu, MenuItem } from "@/components/ui/dropdown";
 import { content } from "@/data/componentPage/content";
 
 const optimalPath = (path: string) => {

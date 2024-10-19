@@ -1,12 +1,8 @@
 "use client";
 
-import { HeroBar } from "@/components/home/HeroBar";
-import { WorkSession } from "@/components/home/WorkSession";
-import { MoonSun } from "@/components/home/MoonSun";
-
+import { HeroBar, WorkSession, MoonSun } from "@/components/home";
 
 function Home() {
-
     return (
         <main className={"mx-auto overflow-hidden"}>
             <MoonSun />

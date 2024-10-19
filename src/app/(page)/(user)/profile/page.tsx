@@ -1,7 +1,7 @@
 "use client";
 
-import UserDetails from "@/components/mainPage/profile/UserDeteils";
-import { Card } from "@/components/mainPage/postPage/Card";
+import UserDetails from "@/components/profile/UserDeteils";
+import { Card } from "@/components/postPage/Card";
 
 const Page = () => {
 

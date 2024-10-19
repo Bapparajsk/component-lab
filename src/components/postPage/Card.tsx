@@ -6,7 +6,7 @@ import { IconHeart, IconHeartFilled, IconCode, IconCreditCard, IconCodeDots } fr
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-import { ToolTipCard } from "@/components/mainPage/postPage/ToolTipCard";
+import { ToolTipCard } from "@/components/postPage/ToolTipCard";
 
 const MotionIconHeart = motion.create(IconHeart);
 const MotionIconHeartFilled = motion.create(IconHeartFilled);
