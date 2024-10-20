@@ -15,7 +15,7 @@ import { IconBell } from "@tabler/icons-react";
 
 import { SideBarItem } from "@/components/mainPage/SideBarItem";
 import { EmailIcon, PasswordIcon, LogoutIcon, SeeAllIcon } from "@/icons/animation-icon";
-import { Notiftion } from "@/components/profile/index";
+import { Notification } from "@/components/profile/index";
 
 export default function TopNav() {
 
@@ -68,21 +68,21 @@ export default function TopNav() {
                         <Card className={"max-w-[400px]"}>
                             <CardBody>
                                 <div className={"w-full h-auto flex flex-col gap-2"}>
-                                    <Notiftion
+                                    <Notification
                                         img={"https://i.pravatar.cc/150?u=a04258114e29026702d"}
                                         name={"John Do"}
                                         username={"@johndoe"}
                                         profileLink={"/"}
                                         body={"lorem ipsum dolor sit amet, co  labore et dolo dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna alre magna aliqua."}
                                     />
-                                    <Notiftion
+                                    <Notification
                                         img={"https://i.pravatar.cc/150?u=a04258114e29026702d"}
                                         name={"John Do"}
                                         username={"@johndoe"}
                                         profileLink={"/"}
                                         body={"lorem ipsum dolor sit amet, co  labore et dolo dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna al dolor sit amet, co  labore et dolore magna alre magna aliqua."}
                                     />
-                                    <Notiftion
+                                    <Notification
                                         img={"https://i.pravatar.cc/150?u=a04258114e29026702d"}
                                         name={"John Do"}
                                         username={"@johndoe"}

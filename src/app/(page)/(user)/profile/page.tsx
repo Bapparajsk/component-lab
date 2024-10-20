@@ -1,6 +1,6 @@
 "use client";
 
-import UserDetails from "@/components/profile/UserDeteils";
+import UserDetails from "@/components/profile/UserDetails";
 import { Card } from "@/components/postPage/Card";
 
 const Page = () => {

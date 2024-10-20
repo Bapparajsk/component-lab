@@ -1,5 +1,5 @@
-import {Notiftion} from './Notiftion';
+import {Notification} from './Notification';
 
 export {
-    Notiftion
+    Notification
 };

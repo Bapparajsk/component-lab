@@ -1,5 +1,6 @@
 "use client";
 
+import { ReactNode } from "react";
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { IconBrandGithub, IconBrandTwitter, IconBrandLinkedin, IconLink } from "@tabler/icons-react";
@@ -8,7 +9,7 @@ import { IconBrandGithub, IconBrandTwitter, IconBrandLinkedin, IconLink } from "
 import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 import { cn } from "@/lib/utils";
 
-export default function UserDeteils() {
+export default function UserDetails() {
 
     const imageUrl =
         "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg";
@@ -61,23 +62,23 @@ export default function UserDeteils() {
                             </div>
                         </div>
                         <div className={"w-full h-full flex flex-col items-start justify-start gap-2 px-5 py-4 font-rubik"}>
-                            <UserLinke
+                            <UserLinker
                                 link={"https://github.com/Bapparaj007"} // maxlen -> 70
                                 icon={<IconBrandGithub />}
                             />
-                            <UserLinke
+                            <UserLinker
                                 link={"https://twiter.com/Bapparaj007"}
                                 icon={<IconBrandTwitter />}
                             />
-                            <UserLinke
+                            <UserLinker
                                 link={"https://github.j007"}
                                 icon={<IconBrandLinkedin />}
                             />
-                            <UserLinke
+                            <UserLinker
                                 link={"https://gitparaj007"}
                                 icon={<IconLink />}
                             />
-                            <UserLinke
+                            <UserLinker
                                 link={"https://github.com/Badfufdfpparsdfisdfgjddfiguhrgheriojdfsdkfsodfjquiweddfsdfsdfsdfsdffuigdfgaj007"}
                                 icon={<IconLink />}
                             />
@@ -108,14 +109,14 @@ export default function UserDeteils() {
 }
 
 
-function UserLinke({
+function UserLinker({
     link,
     icon,
     className,
     linkClassName,
 }: {
     link: string;
-    icon: React.ReactNode;
+    icon?: ReactNode;
     className?: string;
     linkClassName?: string;
 }) {

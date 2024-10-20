@@ -2,10 +2,13 @@
 
 import { Button, Input, Pagination } from "@nextui-org/react";
 import { IconBookUpload } from "@tabler/icons-react";
+import { useRouter  } from "next/navigation";
 
 import { PostCard, QueryButton } from "@/components/dashboard";
 
 export const ComponentList = () => {
+
+  const router = useRouter();
 
   return (
     <div className={"w-full h-auto py-4 px-3 flex gap-x-2 flex-col items-center"}>
@@ -24,7 +27,7 @@ export const ComponentList = () => {
           <div className={"w-auto h-auto flex gap-2"}>
             <QueryButton title={"Tag"} onClick={(key) => (console.log(key))}/>
             <QueryButton title={"Sort"} onClick={(key) => (console.log(key))}/>
-            <Button startContent={<IconBookUpload size={20} />} className={"text-white font-bold bg-[#4F913D]"}>
+            <Button onPress={() => router.push("/upload")} startContent={<IconBookUpload size={20} />} className={"text-white font-bold bg-[#4F913D]"}>
               New
             </Button>
           </div>
@@ -34,7 +37,6 @@ export const ComponentList = () => {
           id={"upload-option"}
           description={"This is a simple upload option for your project. This is a simple upload option for your project. This is a simple upload option for your project. This is a simple upload option for your project. This is a simple upload option for your project."}
         />
-
         <div className={"w-full h-auto flex justify-end"}>
           <Pagination
             showShadow={true}
