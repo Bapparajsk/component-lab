@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useRef, useEffect, memo } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 
 export function OtpVerify (){
   const [otp, setOtp] = useState<string>("");

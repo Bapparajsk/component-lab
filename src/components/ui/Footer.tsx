@@ -21,7 +21,7 @@ export const Footer = () => {
   ];
 
   return (
-    <div className={"w-full h-24 font-Work-Sans  mt-10 border-t border-gray-600 flex items-center justify-center gap-x-10"}>
+    <div className={"w-full h-auto min:h-24 py-5 font-Work-Sans mt-10 border-t border-gray-600 flex flex-col sm:flex-row items-center justify-center gap-10"}>
       <div>
         <p className={""}>© 2024 Component Lab</p>
       </div>
