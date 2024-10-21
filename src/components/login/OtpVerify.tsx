@@ -1,10 +1,14 @@
 "use client";
 
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, useEffect, memo } from "react";
 
 export function OtpVerify (){
   const [otp, setOtp] = useState<string>("");
   const otpRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    otpRef.current[0]?.focus();
+  }, []);
 
   const OtpInput = useMemo(() => {
     const inputs = Array.from({ length: 4 }, (_, i) => (
@@ -14,7 +18,7 @@ export function OtpVerify (){
           otpRef.current[i] = el; // Assign ref
         }}
         className={
-          "w-10 h-10 text-center text-2xl font-medium rounded-md shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
+          "w-10 h-10 text-center text-2xl font-medium rounded-md shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 "
         }
         type={"text"}
         maxLength={1}
@@ -61,9 +65,11 @@ export function OtpVerify (){
     <div className={"w-full h-auto py-3 px-2 flex items-center justify-center"}>
       <div className={"flex flex-col space-y-4"}>
         <div className={"flex space-x-2 items-center justify-center"}>
-          {OtpInput}
+          {OtpInput.map((item) => (
+            <div key={item.key}>{item} </div>
+          ))}
         </div>
       </div>
     </div>
   );
-};
+}

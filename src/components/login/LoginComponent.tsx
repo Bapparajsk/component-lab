@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
 
 
 import { BottomGradient, Input, Label, LabelInputContainer } from "@/components/ui/singinfrom";
@@ -11,11 +11,63 @@ import { OtpVerify } from "@/components/login/OtpVerify";
 export const LoginComponent = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true);
+  const [time, setTime] = useState(5);
+
+  useEffect(() => {
+    const timeId = setInterval(() => {
+
+      setTime((prev) => {
+        if (prev === 0) {
+          clearInterval(timeId);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(timeId);
+    };
+  }, []);
+
+  const counter = useMemo(() => {
+    return (
+      <div className={"w-full h-auto flex items-center justify-start"}>
+        <p className={"text-neutral-600 dark:text-neutral-300 text-sm"}>
+          Didn&apos;t receive the code? {time !== 0 && "Wait"}
+        </p>
+        {time === 0 && (
+          <button
+            className={"text-primary-500 dark:text-primary-400 text-sm font-medium ml-2 hover:underline"}
+            onClick={onOpen}
+          >
+            Resend OTP
+          </button>
+        )}
+        {
+          !(time === 0) &&
+          <>
+            <p className={"text-neutral-600 dark:text-neutral-300 text-sm ml-2"}>
+              in
+            </p>
+            <p className={"text-primary-500 dark:text-primary-400 text-sm font-medium ml-2"}>
+              {time}
+            </p>
+            <p className={"text-neutral-600 dark:text-neutral-300 text-sm ml-2"}>
+              seconds
+            </p>
+          </>
+        }
+      </div>
+    );
+  }, [time]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
   };
+
+
   return (
     <div
       className={"max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black"}>
@@ -92,6 +144,7 @@ export const LoginComponent = () => {
         backdrop={"blur"}
         isOpen={true}
         onOpenChange={onOpenChange}
+        hideCloseButton={true}
         motionProps={{
           variants: {
             enter: {
@@ -124,11 +177,19 @@ export const LoginComponent = () => {
               </ModalHeader>
               <ModalBody>
                 <OtpVerify />
+                {counter}
               </ModalBody>
-              <ModalFooter>
-                <Button color={"primary"} onPress={onClose}>
-                  Action
+              <ModalFooter className={"justify-between"}>
+                <Button variant={"bordered"} color={"danger"}>
+                  Change Email
                 </Button>
+                <button
+                  className={"bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-auto px-6 text-white border-t border-gray-600 rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] tracking-wider"}
+                  type={"button"}
+                >
+                  Verify &rarr;
+                  <BottomGradient />
+                </button>
               </ModalFooter>
             </>
           )}
