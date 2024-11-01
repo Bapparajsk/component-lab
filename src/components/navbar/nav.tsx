@@ -1,47 +1,50 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-    Navbar,
-    NavbarBrand,
-    NavbarMenuToggle,
-    NavbarMenuItem,
-    NavbarMenu,
-    NavbarContent,
-    NavbarItem,
     Button,
     Kbd,
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    NavbarItem,
+    NavbarMenu,
+    NavbarMenuItem,
+    NavbarMenuToggle,
     Tooltip,
-    User,
+    User
 } from "@nextui-org/react";
-import { IconTableFilled, IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
+import { IconBrandGithub, IconBrandLinkedin, IconTableFilled } from "@tabler/icons-react";
 import { SearchIcon } from "@nextui-org/shared-icons";
 import Link from "next/link";
+import {useRouter} from "next/navigation";;
 
-import { TolContent, ThemeToggleButton } from "@/components/navbar";
+import { ThemeToggleButton, TolContent } from "@/components/navbar";
 import { HoveredLink, Menu, MenuItem } from "@/components/ui/dropdown";
 import { content } from "@/data/componentPage/content";
+import { useUser } from "@/context/UserContext";
 
 const optimalPath = (path: string) => {
     return path.split(" ").join("").toLowerCase();
 };
 
+const menuItems = [
+    "Profile",
+    "Dashboard",
+    "Activity",
+    "Analytics",
+    "System",
+    "Deployments",
+    "My Settings",
+    "Team Settings",
+    "Help & Feedback",
+    "Log Out"
+];
+
 export default function AppNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [active, setActive] = useState<string | null>(null);
-
-
-    const menuItems = [
-        "Profile",
-        "Dashboard",
-        "Activity",
-        "Analytics",
-        "System",
-        "Deployments",
-        "My Settings",
-        "Team Settings",
-        "Help & Feedback",
-        "Log Out",
-    ];
+    const { isUserLoggedIn, user } = useUser();
+    const router = useRouter();
 
     const links = [
         {
@@ -156,24 +159,36 @@ export default function AppNavbar() {
                     </Button>
                 </NavbarItem>
                 <NavbarItem>
-                    <Tooltip
+                    {isUserLoggedIn() ? (
+                          <Tooltip
+                            content={user?.name && <TolContent name={user.name}/>}
+                            onClick={() => router.push("/profile")}
+                          >
+                              <User
+                                name={user?.name || "John"}
+                                description={(
+                                  <Link className={"text-blue-500"} href={"/profile"}
+                                        target={"_blank"}>
+                                      {user?.displayName || "@john"}
+                                  </Link>
+                                )}
 
-                        content={<TolContent name={"BapparajSk"} />}
-                    >
-                        <User
-                            name={"Bapparaj sk"}
-                            description={(
-                                <Link className={"text-blue-500"} href={"https://github.com/Bapparajsk"} target={"_blank"}>
-                                    @bapparajsk
-                                </Link>
-                            )}
+                                avatarProps={{
+                                    src: "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
+                                    className: "cursor-pointer"
+                                }}
+                              />
+                          </Tooltip>
+                    ) : (
+                      <Button
+                        variant={"flat"}
+                        color={"success"}
+                        onPress={() => router.push("/login")}
+                      >
+                          Log In
+                      </Button>
+                    )}
 
-                            avatarProps={{
-                                src: "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
-                                className: "cursor-pointer"
-                            }}
-                        />
-                    </Tooltip>
                 </NavbarItem>
             </NavbarContent>
 

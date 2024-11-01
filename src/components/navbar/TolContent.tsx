@@ -7,7 +7,7 @@ import axios from "axios";
 
 import {cn} from "@/lib/utils";
 
-export const TolContent = ({name }:{name: string}) => {
+export const TolContent = ({ name }:{name: string}) => {
 
     const { data, isPending } = useQuery({
         queryKey: ["user", name],

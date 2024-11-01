@@ -6,6 +6,7 @@ import {QueryProvider} from "@/app/QueryClientProvider";
 import {ThemeProvider} from "@/context/ThemeContext";
 import { AppNavbar } from "@/components/navbar";
 import { LocationProvider } from "@/context/LocationContext";
+import { UserProvider } from "@/context/UserContext";
 
 import {Providers} from "./providers";
 
@@ -26,8 +27,10 @@ export default function RootLayout({
           <ThemeProvider>
             <QueryProvider>
               <LocationProvider>
-                <AppNavbar/>
-                {children}
+                <UserProvider>
+                  <AppNavbar/>
+                  {children}
+                </UserProvider>
               </LocationProvider>
             </QueryProvider>
           </ThemeProvider>
