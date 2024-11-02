@@ -1,28 +1,9 @@
 "use client";
 
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import { createContext, FC, ReactNode, useContext, useState, useEffect } from "react";
 
-export type UserTypes = {
-  id: string;
-  name: string;
-  displayName: string;
-  userImage: string;
-  gender: "he/him" | "she/her";
-  description: string;
-  links: { title: string, url: string }[];
-  followers: number;
-  following: number;
-  likedPosts: number;
-  liked: number;
-  language: { title: string, url: string }[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface UserContextType {
-  user: UserTypes | null;
-  isUserLoggedIn: () => boolean;
-}
+import { UserTypes, UserContextType } from "@/types/user";
+import { fetchUser } from "@/lib/user";
 
 const UserContext = createContext<UserContextType>({
   user: null,
@@ -33,8 +14,16 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const [user, setUser] = useState<UserTypes | null>(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("user-token");
+    if(token) {
+      fetchUser(token).then((user) => setUser(user));
+    }
+  }, []);
+
   const isUserLoggedIn = (): boolean => {
-    return !!user;
+    return !!user; // This for production
+    // return true; // This for development
   };
 
   return (

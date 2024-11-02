@@ -1,17 +1,47 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, FormEvent, useRef } from "react";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-
+import { useMutation } from "@tanstack/react-query";
 
 import { BottomGradient, Input, Label, LabelInputContainer } from "@/components/ui/singinfrom";
 import { OtpVerify } from "@/components/login/OtpVerify";
+import { isValidEmail, isValidPassword } from "@/lib/validator";
+import { login } from "@/lib/authentication";
+import { UserTypes } from "@/types/user";
 
+interface TypesMutation {
+  data: {
+    fullName?: string;
+    UName?: string;
+    email: string;
+    password: string;
+  },
+  fn: (data: any) => Promise<{token: string, user: UserTypes}>,
+}
+
+const getDefaultError = () => {
+  return {
+    fullName: { error: false, message: "", },
+    UName: { error: false, message: "", },
+    email: { error: false, message: "", },
+    password: { error: false, message: "", },
+  };
+};
+
+const inputes = [
+  { id: "Name", placeholder: "John dev", type: "text", label: "Full Name" },
+  { id: "u-name", placeholder: "@john", type: "text", label: "User Name" },
+  { id: "email", placeholder: "john@ex.com", type: "email", label: "Email" },
+  { id: "password", placeholder: "••••••••", type: "password", label: "Password" },
+];
 
 export const LoginComponent = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true);
   const [time, setTime] = useState(5);
+  const inputsRef = useRef<HTMLInputElement[]>([]);
+  const [showErrors, setShowErrors] = useState(getDefaultError());
 
   useEffect(() => {
     const timeId = setInterval(() => {
@@ -62,11 +92,36 @@ export const LoginComponent = () => {
     );
   }, [time]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted");
-  };
+  const loginMutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async ({data, fn}: TypesMutation) => {
+      return await fn(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const [fullName, UName, email, password] = inputsRef.current.map((input) => input.value);
+
+    if (!fullName || !UName || !email || !password) {
+      console.log("error");
+      setShowErrors({
+        fullName: { error: !fullName, message: "Full name is required" },
+        UName: { error: !UName, message: "User name is required" },
+        email: { error: !email, message: "Email is required" },
+        password: { error: !password, message: "Password is required" },
+      });
+      return;
+    }
+
+    loginMutation.mutate({
+      data: {fullName, UName, email, password},
+      fn: login
+    });
+  };
 
   return (
     <div
@@ -79,29 +134,24 @@ export const LoginComponent = () => {
         yet
       </p>
       <form className={"my-8"} onSubmit={handleSubmit}>
-        {!isLoginMode && <div className={"flex flex-col space-y-2 mb-4"}>
-          <LabelInputContainer>
-            <Label htmlFor={"Name"}>Full Name</Label>
-            <Input id={"Name"} placeholder={"John dev"} type={"text"} />
+        {inputes.map(({id, placeholder, type, label}, idx) => (
+          <LabelInputContainer key={idx} className={`mb-4 ${isLoginMode && idx <= 1 && "hidden"}`}>
+            <Label htmlFor={id}>{label}</Label>
+            <Input className={"dark:text-red-500"} id={id} placeholder={placeholder} type={type} ref={e => {
+              if (e) inputsRef.current[idx] = e;
+            }}/>
+            {showErrors.email.error && <p className={"text-red-500 text-sm"}>{showErrors.email.message}</p>}
           </LabelInputContainer>
-          <LabelInputContainer>
-            <Label htmlFor={"u-name"}>User Name</Label>
-            <Input id={"u-name"} placeholder={"@john"} type={"text"} />
-          </LabelInputContainer>
-        </div>}
-        <LabelInputContainer className={"mb-4"}>
-          <Label htmlFor={"email"}>Email Address</Label>
-          <Input id={"email"} placeholder={"john@ex.com"} type={"email"} />
-        </LabelInputContainer>
-        <LabelInputContainer className={"mb-4"}>
-          <Label htmlFor={"password"}>Password</Label>
-          <Input id={"password"} placeholder={"••••••••"} type={"password"} />
-        </LabelInputContainer>
+        ))}
         <div className={"flex gap-2"}>
           <button
             className={"bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-auto px-6 text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"}
-            type={"submit"}
-            onClick={() => setIsLoginMode(!isLoginMode)}
+            type={"button"}
+            onClick={() => {
+              setIsLoginMode(!isLoginMode);
+              setShowErrors(getDefaultError());
+            }}
+            disabled={loginMutation.isPending}
           >
             {isLoginMode ?  "Sing up": "Sing in" } &rarr;
             <BottomGradient />
@@ -121,6 +171,7 @@ export const LoginComponent = () => {
           <button
             className={"relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"}
             type={"submit"}
+            disabled={loginMutation.isPending}
           >
             <IconBrandGithub className={"h-4 w-4 text-neutral-800 dark:text-neutral-300"} />
             <span className={"text-neutral-700 dark:text-neutral-300 text-sm"}>
@@ -131,6 +182,7 @@ export const LoginComponent = () => {
           <button
             className={"relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"}
             type={"submit"}
+            disabled={loginMutation.isPending}
           >
             <IconBrandGoogle className={"h-4 w-4 text-neutral-800 dark:text-neutral-300"} />
             <span className={"text-neutral-700 dark:text-neutral-300 text-sm"}>
@@ -142,7 +194,7 @@ export const LoginComponent = () => {
       </form>
       <Modal
         backdrop={"blur"}
-        isOpen={true}
+        isOpen={isOpen}
         onOpenChange={onOpenChange}
         hideCloseButton={true}
         motionProps={{

@@ -16,6 +16,7 @@ import {
   UploadIcon
 } from "@/icons/animation-icon";
 import { SideBarItem } from "@/components/mainPage/SideBarItem";
+import { useUser } from "@/context/UserContext";
 
 interface LinkProps {
   link: string;
@@ -71,7 +72,7 @@ const postLinked = [
 export const SideBar = () => {
 
   const [selectedKeys, setSelectedKeys] = useState<Set<Key> | string>(new Set(["animated"]));
-
+  const { isUserLoggedIn } = useUser();
   // const selectedValue = useMemo(
   //   () => Array.from(selectedKeys).join(";"),
   //   [selectedKeys]
@@ -99,7 +100,7 @@ export const SideBar = () => {
                 key={item.title}
                 title={item.title}
                 icon={item.icon}
-                link={item.link}
+                link={isUserLoggedIn() ? item.link : "/login"}
                 color={"auto"}
                 textAnimation={true}
               />
