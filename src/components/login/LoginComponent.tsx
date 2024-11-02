@@ -6,42 +6,18 @@ import { useMutation } from "@tanstack/react-query";
 
 import { BottomGradient, Input, Label, LabelInputContainer } from "@/components/ui/singinfrom";
 import { OtpVerify } from "@/components/login/OtpVerify";
-import { isValidEmail, isValidPassword } from "@/lib/validator";
+import { chatAllDataValid } from "@/lib/validator";
 import { login } from "@/lib/authentication";
-import { UserTypes } from "@/types/user";
-
-interface TypesMutation {
-  data: {
-    fullName?: string;
-    UName?: string;
-    email: string;
-    password: string;
-  },
-  fn: (data: any) => Promise<{token: string, user: UserTypes}>,
-}
-
-const getDefaultError = () => {
-  return {
-    fullName: { error: false, message: "", },
-    UName: { error: false, message: "", },
-    email: { error: false, message: "", },
-    password: { error: false, message: "", },
-  };
-};
-
-const inputes = [
-  { id: "Name", placeholder: "John dev", type: "text", label: "Full Name" },
-  { id: "u-name", placeholder: "@john", type: "text", label: "User Name" },
-  { id: "email", placeholder: "john@ex.com", type: "email", label: "Email" },
-  { id: "password", placeholder: "••••••••", type: "password", label: "Password" },
-];
+import { TypesMutation, ErrorTypes } from "@/types/form";
+import { getDefaultError, inputs } from "@/lib/form";
 
 export const LoginComponent = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true);
   const [time, setTime] = useState(5);
   const inputsRef = useRef<HTMLInputElement[]>([]);
-  const [showErrors, setShowErrors] = useState(getDefaultError());
+  const [showErrors, setShowErrors] = useState<ErrorTypes>(getDefaultError());
+  const [isLodiangMode, setIsLodiangMode] = useState(false);
 
   useEffect(() => {
     const timeId = setInterval(() => {
@@ -106,21 +82,18 @@ export const LoginComponent = () => {
     e.preventDefault();
     const [fullName, UName, email, password] = inputsRef.current.map((input) => input.value);
 
-    if (!fullName || !UName || !email || !password) {
-      console.log("error");
-      setShowErrors({
-        fullName: { error: !fullName, message: "Full name is required" },
-        UName: { error: !UName, message: "User name is required" },
-        email: { error: !email, message: "Email is required" },
-        password: { error: !password, message: "Password is required" },
-      });
+    const errors = chatAllDataValid({email, password, fullName, UName}, isLoginMode);
+    if (errors !== null) {
+      setShowErrors(errors);
       return;
     }
 
-    loginMutation.mutate({
-      data: {fullName, UName, email, password},
-      fn: login
-    });
+    if (isLoginMode) {
+      loginMutation.mutate({
+        data: {email, password},
+        fn: login,
+      });
+    }
   };
 
   return (
@@ -134,13 +107,13 @@ export const LoginComponent = () => {
         yet
       </p>
       <form className={"my-8"} onSubmit={handleSubmit}>
-        {inputes.map(({id, placeholder, type, label}, idx) => (
+        {inputs.map(({id, placeholder, type, label}, idx) => (
           <LabelInputContainer key={idx} className={`mb-4 ${isLoginMode && idx <= 1 && "hidden"}`}>
             <Label htmlFor={id}>{label}</Label>
-            <Input className={"dark:text-red-500"} id={id} placeholder={placeholder} type={type} ref={e => {
+            <Input className={`${!showErrors[id].error && "text-red-500 dark:text-red-500"}`} id={id} placeholder={placeholder} type={type} ref={e => {
               if (e) inputsRef.current[idx] = e;
             }}/>
-            {showErrors.email.error && <p className={"text-red-500 text-sm"}>{showErrors.email.message}</p>}
+            {showErrors[id].error && <p className={"text-red-500 text-sm"}>{showErrors[id].message}</p>}
           </LabelInputContainer>
         ))}
         <div className={"flex gap-2"}>
@@ -151,7 +124,7 @@ export const LoginComponent = () => {
               setIsLoginMode(!isLoginMode);
               setShowErrors(getDefaultError());
             }}
-            disabled={loginMutation.isPending}
+            disabled={isLodiangMode}
           >
             {isLoginMode ?  "Sing up": "Sing in" } &rarr;
             <BottomGradient />
@@ -171,7 +144,7 @@ export const LoginComponent = () => {
           <button
             className={"relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"}
             type={"submit"}
-            disabled={loginMutation.isPending}
+            disabled={isLodiangMode}
           >
             <IconBrandGithub className={"h-4 w-4 text-neutral-800 dark:text-neutral-300"} />
             <span className={"text-neutral-700 dark:text-neutral-300 text-sm"}>
@@ -182,7 +155,7 @@ export const LoginComponent = () => {
           <button
             className={"relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"}
             type={"submit"}
-            disabled={loginMutation.isPending}
+            disabled={isLodiangMode}
           >
             <IconBrandGoogle className={"h-4 w-4 text-neutral-800 dark:text-neutral-300"} />
             <span className={"text-neutral-700 dark:text-neutral-300 text-sm"}>
