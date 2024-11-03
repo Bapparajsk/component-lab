@@ -15,4 +15,5 @@ export interface ErrorTypes {
   "u-name": { error: boolean, message: string },
   email: { error: boolean, message: string },
   password: { error: boolean, message: string },
+  main: { error: boolean, message: string },
 }

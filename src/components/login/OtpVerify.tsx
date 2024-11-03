@@ -2,8 +2,14 @@
 
 import { useMemo, useState, useRef, useEffect } from "react";
 
-export function OtpVerify (){
-  const [otp, setOtp] = useState<string>("");
+export const OtpVerify = ({
+  otp,
+  setOtp,
+  }: {
+  otp: string;
+  setOtp: (otp: string) => void;
+}) =>{
+
   const otpRef = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -72,4 +78,4 @@ export function OtpVerify (){
       </div>
     </div>
   );
-}
+};

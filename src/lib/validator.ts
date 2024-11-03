@@ -25,7 +25,7 @@ export const isValidUsername = (username: string): boolean => {
     return false;
   }
 
-  return username.charAt(0) !== "@";
+  return username.charAt(0) === "@";
 };
 
 export const chatAllDataValid = (
@@ -62,5 +62,5 @@ export const chatAllDataValid = (
     errors.password.message = "Invalid password";
   }
 
-  return !Object.values(errors).some((error) => error) ? null : errors;
+  return !Object.values(errors).some((error) => error) ? errors : null;
 };

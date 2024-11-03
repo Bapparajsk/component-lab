@@ -5,11 +5,11 @@ if (!serverUrl) {
   throw new Error("SERVER_URL is not set in .env");
 }
 
-axios.create({
+const apiClient  = axios.create({
   baseURL: serverUrl,
   headers: {
     "Content-Type": "application/json"
   }
 });
 
-export default axios;
+export default apiClient;

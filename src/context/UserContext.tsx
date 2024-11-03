@@ -7,7 +7,9 @@ import { fetchUser } from "@/lib/user";
 
 const UserContext = createContext<UserContextType>({
   user: null,
-  isUserLoggedIn: () => false
+  isUserLoggedIn: () => false,
+  setUserState: () => {},
+  setTokenInLocalStorage: () => {}
 });
 
 export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -26,10 +28,18 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // return true; // This for development
   };
 
+  const setUserState = (user: UserTypes | null) => { setUser(user); };
+
+  const setTokenInLocalStorage = (token: string) => {
+    localStorage.setItem("user-token", token);
+  };
+
   return (
     <UserContext.Provider value={{
       user,
-      isUserLoggedIn
+      isUserLoggedIn,
+      setUserState,
+      setTokenInLocalStorage
     }}>
       {children}
     </UserContext.Provider>
