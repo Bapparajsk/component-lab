@@ -1,38 +1,9 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useIntersection } from '@mantine/hooks';
-
 import UserDetails from "@/components/profile/UserDetails";
 import { Card } from "@/components/postPage/Card";
 
 const Page = () => {
-
-  const {
-    data,
-    fetchNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['projects'],
-    queryFn: fetchPost,
-    getNextPageParam: (lastPage, pages) => lastPage.page,
-    initialPageParam: 0
-  });
-
-  const { ref, entry } = useIntersection({
-    root: null,
-    threshold: 0.5
-  });
-
-
-  useEffect(() => {
-    if (entry?.isIntersecting) {
-      fetchNextPage();
-    }
-  }, [entry]);
-
-  // @ts-ignore
-  let post = data?.pages.flatMap((page) => page.data);
 
   return (
     <div className={"h-auto w-full"}>

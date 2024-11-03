@@ -16,7 +16,7 @@ import { useUser } from "@/context/UserContext";
 
 
 export const LoginComponent = () => {
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true);
   const [time, setTime] = useState(10);
   const inputsRef = useRef<HTMLInputElement[]>([]);
@@ -82,26 +82,15 @@ export const LoginComponent = () => {
 
   const mutation = useMutation({
     mutationKey: ["form-mutation"],
-    mutationFn: async ({data, fn, onSuccess}: { data: any, fn: (data: any) => Promise<any>, onSuccess: (data: any) => void }) => {
-      const res = await fn(data);
-      onSuccess(res);
-    },
-    onError: (error) => {
-      console.error(error);
-      if (axios.isAxiosError(error)) {
-        const {response} = error;
-        if (response?.status === 401) {
-          setShowErrors({
-            ...getDefaultError(),
-            main: {error: true, message: "Invalid Credentials, Please try again..."},
-            email: {error: true, message: "Email or password is incorrect"},
-            password: {error: true, message: "Email or password is incorrect"},
-          });
+    mutationFn: async ({ data, fn, onSuccess, onError }: { data: any, fn: (data: any) => Promise<any>, onSuccess: (data: any) => void, onError?: (error: any) => void }) => {
+      try {
+        const response = await fn(data);
+        onSuccess(response.data);
+      } catch (error) {
+        if (onError) {
+          onError(error);
         }
       }
-    },
-    onSettled: () => {
-      console.log("onSettled");
     },
   });
 
@@ -109,7 +98,7 @@ export const LoginComponent = () => {
     e.preventDefault();
     const [fullName, UName, email, password] = inputsRef.current.map((input) => input.value);
     console.log(1);
-    const errors = chatAllDataValid({email, password, fullName, UName}, isLoginMode);
+    const errors = chatAllDataValid({ email, password, fullName, UName }, isLoginMode);
     console.log(errors);
     if (errors !== null) {
       setShowErrors(errors);
@@ -117,19 +106,79 @@ export const LoginComponent = () => {
     }
     console.log(2);
     if (isLoginMode) {
-      mutation.mutate({ data: {email, password}, fn: login,
+      mutation.mutate({
+        data: { email, password }, fn: login,
         onSuccess: (data) => {
           setUserState(data.user);
           setTokenInLocalStorage(data.token);
           router.replace("/profile");
+        },
+        onError: (error) => {
+          console.error(error);
+          if (axios.isAxiosError(error)) {
+            const { response } = error;
+            if (response?.status === 401) {
+              setShowErrors({
+                ...getDefaultError(),
+                main: { error: true, message: "Invalid Credentials, Please try again..." },
+                email: { error: true, message: "Email or password is incorrect" },
+                password: { error: true, message: "Email or password is incorrect" },
+              });
+            }
+          } else {
+            setShowErrors({
+              ...getDefaultError(),
+              main: { error: true, message: "Something went wrong, Please try again..." },
+            });
+          }
         }
       });
     } else {
-      mutation.mutate({ data: {fullName, UName, email, password}, fn: register,
+      mutation.mutate({
+        data: { fullName, UName, email, password }, fn: register,
         onSuccess: (token) => {
           console.log(token);
           setToken(token);
           onOpen();
+        },
+        onError: (error) => {
+          console.error(error);
+          if (axios.isAxiosError(error)) {
+            const { response } = error;
+
+            if (response?.status === 400) {
+              const e = getDefaultError();
+              let message = "Something went wrong";
+
+              // Check for specific error messages and update `e` accordingly
+              switch (response.data?.message) {
+                case "User already exist":
+                  message = "User already exists";
+                  e.email = { error: true, message: "Email already exists" };
+                  e["u-name"] = { error: true, message: "User Name already exists" };
+                  break;
+                case "Display name already exist":
+                  message = "Username already exists";
+                  e["u-name"] = { error: true, message: "user Name already exists" };
+                  break;
+                case "Email already exist":
+                  message = "Email already exists";
+                  e.email = { error: true, message };
+                  break;
+              }
+
+              // Set a general error message in `e.main`
+              e.main = { error: true, message: `${message}, Please try different Details...!` };
+
+              // Display errors
+              setShowErrors(e);
+            }
+          } else {
+            setShowErrors({
+              ...getDefaultError(),
+              main: { error: true, message: "Something went wrong, Please try again..." },
+            });
+          }
         }
       });
     }
@@ -139,7 +188,7 @@ export const LoginComponent = () => {
     onOpenChange();
 
     mutation.mutate({
-      data: {token, otp},
+      data: { token, otp },
       fn: verifyOtp,
       onSuccess: (data) => {
         setUserState(data.user);
@@ -152,7 +201,7 @@ export const LoginComponent = () => {
   function resendOtpHandler() {
     if (isLoginMode || mutation.isPending || time !== 0) return;
     mutation.mutate({
-      data: {token},
+      data: { token },
       fn: register,
       onSuccess: (token) => { setToken(token); }
     });
@@ -165,19 +214,19 @@ export const LoginComponent = () => {
         Welcome to Component Lab
       </h2>
       <p className={"text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300"}>
-        {isLoginMode ? "Login to" : "Create account" } Component-lab if you can because we don&apos;t have a login flow
+        {isLoginMode ? "Login to" : "Create account"} Component-lab if you can because we don&apos;t have a login flow
         yet
       </p>
       {showErrors.main.error && <p className={"mt-8 text-red-600 font-fredoka"}>
         {showErrors.main.message}
       </p>}
       <form className={"my-8"} onSubmit={handleSubmit}>
-        {inputs.map(({id, placeholder, type, label}, idx) => (
+        {inputs.map(({ id, placeholder, type, label }, idx) => (
           <LabelInputContainer key={idx} className={`mb-4 ${isLoginMode && idx <= 1 && "hidden"}`}>
             <Label htmlFor={id}>{label}</Label>
             <Input className={`${showErrors[id].error && "text-red-500 dark:text-red-500"}`} id={id} placeholder={placeholder} type={type} ref={e => {
               if (e) inputsRef.current[idx] = e;
-            }}/>
+            }} />
             {showErrors[id].error && <p className={"text-red-500 text-sm"}>{showErrors[id].message}</p>}
           </LabelInputContainer>
         ))}
@@ -191,7 +240,7 @@ export const LoginComponent = () => {
             }}
             disabled={mutation.isPending}
           >
-            {isLoginMode ?  "Sing up": "Sing in"} <IconArrowNarrowRight size={16} stroke={2}/>
+            {isLoginMode ? "Sing up" : "Sing in"} <IconArrowNarrowRight size={16} stroke={2} />
             <BottomGradient />
           </button>
           <button
@@ -199,7 +248,7 @@ export const LoginComponent = () => {
             type={"submit"}
             disabled={mutation.isPending}
           >
-            {mutation.isPending ? <CircularProgress size={"sm"}/> : (isLoginMode ?  "Sing in" : "Create Account")} {!mutation.isPending  && <IconArrowNarrowRight size={16} stroke={2}/>}
+            {mutation.isPending ? <CircularProgress size={"sm"} /> : (isLoginMode ? "Sing in" : "Create Account")} {!mutation.isPending && <IconArrowNarrowRight size={16} stroke={2} />}
             <BottomGradient />
           </button>
         </div>
@@ -264,11 +313,11 @@ export const LoginComponent = () => {
               <ModalHeader className={"flex flex-col gap-1"}>
                 <h3 className={"text-lg font-semibold"}>Verify Information</h3>
                 <p className={"text-sm text-neutral-600 dark:text-neutral-300"}>
-                  send a verification code to your email address <br/> <code>bapparaj@code.com</code>
+                  send a verification code to your email address <br /> <code>bapparaj@code.com</code>
                 </p>
               </ModalHeader>
               <ModalBody>
-                <OtpVerify otp={otp} setOtp={(o) => setOtp(o)}/>
+                <OtpVerify otp={otp} setOtp={(o) => setOtp(o)} />
                 {counter}
               </ModalBody>
               <ModalFooter className={"justify-between"}>

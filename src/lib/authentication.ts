@@ -3,7 +3,7 @@ import { UserTypes } from "@/types/user";
 
 export const login = async ({email, password}:{ email: string, password: string }) => {
   const res = await axios.post("/auth/login", { email, password });
-  return res.data as {token: string, user: UserTypes };
+  return res.data.data as {token: string, user: UserTypes };
 };
 
 export const register = async ({
@@ -31,10 +31,10 @@ export const register = async ({
 export const verifyOtp = async ({token, otp}: {token: string, otp: string}) => {
   console.log("verifying otp", token, otp);
   const res = await axios.post("/auth/verify", { token, otp });
-  return res.data as { token: string, user: UserTypes };
+  return res.data.data as { token: string, user: UserTypes };
 };
 
 export const resendOtp = async ({token}: {token: string}) => {
   const res = await axios.post("/auth/resend", { token });
-  return res.data.token as string;
+  return res.data.data.token as string;
 };

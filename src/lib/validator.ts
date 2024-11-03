@@ -39,28 +39,36 @@ export const chatAllDataValid = (
 ): ErrorTypes | null => {
   const { email, password, fullName, UName } = data;
   const errors: ErrorTypes = getDefaultError();
+  let isError = false;
 
   if (!env) {
     if (!fullName || !isValidName(fullName)) {
+      isError = true;
       errors.fullName.error = true;
       errors.fullName.message = "Invalid full name";
     }
 
     if (!UName || !isValidUsername(UName)) {
+      isError = true;
       errors["u-name"].error = true;
       errors["u-name"].message = "Invalid username";
     }
   }
 
   if (!email || !isValidEmail(email)) {
+    isError = true;
     errors.email.error = true;
     errors.email.message = "Invalid email";
   }
 
   if (!password || !isValidPassword(password)) {
+    isError = true;
     errors.password.error = true;
     errors.password.message = "Invalid password";
   }
 
-  return !Object.values(errors).some((error) => error) ? errors : null;
+  if(isError) {
+    return errors;
+  } 
+  return null;
 };

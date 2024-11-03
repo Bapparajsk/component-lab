@@ -18,7 +18,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("user-token");
-    if(token) {
+    if(token && token !== "undefined") {
       fetchUser(token).then((user) => setUser(user));
     }
   }, []);
