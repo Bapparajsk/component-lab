@@ -97,14 +97,13 @@ export const LoginComponent = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const [fullName, UName, email, password] = inputsRef.current.map((input) => input.value);
-    console.log(1);
     const errors = chatAllDataValid({ email, password, fullName, UName }, isLoginMode);
-    console.log(errors);
     if (errors !== null) {
       setShowErrors(errors);
       return;
     }
-    console.log(2);
+
+    // * Login User mutation
     if (isLoginMode) {
       mutation.mutate({
         data: { email, password }, fn: login,
@@ -114,78 +113,89 @@ export const LoginComponent = () => {
           router.replace("/profile");
         },
         onError: (error) => {
-          console.error(error);
-          if (axios.isAxiosError(error)) {
-            const { response } = error;
-            if (response?.status === 401) {
-              setShowErrors({
-                ...getDefaultError(),
-                main: { error: true, message: "Invalid Credentials, Please try again..." },
-                email: { error: true, message: "Email or password is incorrect" },
-                password: { error: true, message: "Email or password is incorrect" },
-              });
-            }
-          } else {
-            setShowErrors({
-              ...getDefaultError(),
-              main: { error: true, message: "Something went wrong, Please try again..." },
-            });
+          // ! Handle error
+          if(!axios.isAxiosError(error)) {
+            setShowErrors({ ...getDefaultError(), main: { error: true, message: "Something went wrong, Please try again..." }});
+            return;
           }
+
+          const { response } = error;
+          if(response?.status !== 401) {
+            setShowErrors({ ...getDefaultError(), main: { error: true, message: "Something went wrong, Please try again..." }});
+            return;
+          }
+
+          setShowErrors({
+            ...getDefaultError(),
+            main: { error: true, message: "Invalid Credentials, Please try again..." },
+            email: { error: true, message: "Email or password is incorrect" },
+            password: { error: true, message: "Email or password is incorrect" },
+          });
         }
       });
-    } else {
-      mutation.mutate({
-        data: { fullName, UName, email, password }, fn: register,
-        onSuccess: (token) => {
-          console.log(token);
-          setToken(token);
-          onOpen();
-        },
-        onError: (error) => {
-          console.error(error);
-          if (axios.isAxiosError(error)) {
-            const { response } = error;
+      return;
+    } 
 
-            if (response?.status === 400) {
-              const e = getDefaultError();
-              let message = "Something went wrong";
-
-              // Check for specific error messages and update `e` accordingly
-              switch (response.data?.message) {
-                case "User already exist":
-                  message = "User already exists";
-                  e.email = { error: true, message: "Email already exists" };
-                  e["u-name"] = { error: true, message: "User Name already exists" };
-                  break;
-                case "Display name already exist":
-                  message = "Username already exists";
-                  e["u-name"] = { error: true, message: "user Name already exists" };
-                  break;
-                case "Email already exist":
-                  message = "Email already exists";
-                  e.email = { error: true, message };
-                  break;
-              }
-
-              // Set a general error message in `e.main`
-              e.main = { error: true, message: `${message}, Please try different Details...!` };
-
-              // Display errors
-              setShowErrors(e);
-            }
-          } else {
-            setShowErrors({
-              ...getDefaultError(),
-              main: { error: true, message: "Something went wrong, Please try again..." },
-            });
-          }
+    // * Register User mutation
+    mutation.mutate({
+      data: { fullName, UName, email, password }, fn: register,
+      onSuccess: (token) => {
+        console.log(token);
+        setToken(token);
+        onOpen();
+      },
+      onError: (error) => {
+        // ! Handle error
+        console.error(error);
+        if(!axios.isAxiosError(error)) {
+          setShowErrors({ ...getDefaultError(), main: { error: true, message: "Something went wrong, Please try again..." }});
+          return;
         }
-      });
-    }
+
+        const { response } = error;
+        if(response?.status !== 400) {
+          setShowErrors({ ...getDefaultError(), main: { error: true, message: "Something went wrong, Please try again..." }});
+          return;
+        }
+
+        const e = getDefaultError();
+        let message = "Something went wrong";
+
+        switch (response.data?.message) {
+          case "User already exist":
+            message = "User already exists";
+            e.email = { error: true, message: "Email already exists", data: email };
+            e["u-name"] = { error: true, message: "User Name already exists", data: UName };
+            break;
+          case "Display name already exist":
+            message = "Username already exists";
+            e["u-name"] = { error: true, message: "user Name already exists", data: UName };
+            break;
+          case "Email already exist":
+            message = "Email already exists";
+            e.email = { error: true, message, data: email };
+            break;
+        }
+
+        e.main = { error: true, message: `${message}, Please try different Details...!`, data: "" };
+        setShowErrors(e);
+      }
+    });
   };
 
   function verifyOtpHandler() {
     onOpenChange();
+
+    if (mutation.isPending) return;
+    if (otp.length !== 4) {
+      setShowErrors({ ...getDefaultError(), otp: { error: true, message: "Please enter 4 digit OTP", data: otp } });
+      return;
+    }
+
+    if(showErrors.otp.error && showErrors.otp.data === otp) {
+      setShowErrors({ ...getDefaultError(), otp: { error: true, message: "Please enter different OTP", data: otp } });
+      return;
+    }
 
     mutation.mutate({
       data: { token, otp },
@@ -194,6 +204,33 @@ export const LoginComponent = () => {
         setUserState(data.user);
         setTokenInLocalStorage(data.token);
         router.replace("/profile");
+      },
+      onError: (error) => {
+        // ! Handle error
+        console.error(error);
+        if(!axios.isAxiosError(error)) {
+          setShowErrors({ ...getDefaultError(), main: { error: true, message: "Something went wrong, Please try again..." }});
+          return;
+        }
+
+        const { response } = error;
+        if(response?.status !== 400) {
+          setShowErrors({ ...getDefaultError(), main: { error: true, message: "Something went wrong, Please try again..." }});
+          return;
+        }
+
+        const e = getDefaultError();
+        let message = "Something went wrong";
+
+        switch (response.data?.message) {
+          case "Invalid OTP":
+            message = "Invalid OTP";
+            e.otp = { error: true, message, data: otp };
+            break;
+        }
+
+        e.main = { error: true, message: `${message}, Please try different OTP...!`, data: "" };
+        setShowErrors(e);
       }
     });
   }
@@ -203,7 +240,12 @@ export const LoginComponent = () => {
     mutation.mutate({
       data: { token },
       fn: register,
-      onSuccess: (token) => { setToken(token); }
+      onSuccess: (token) => { setToken(token); },
+      onError: (error) => {
+        // ! Handle error
+        console.error(error);
+        setShowErrors({ ...getDefaultError(), main: { error: true, message: "Something went wrong, Please try again..." }});
+      }
     });
   }
 
@@ -317,7 +359,8 @@ export const LoginComponent = () => {
                 </p>
               </ModalHeader>
               <ModalBody>
-                <OtpVerify otp={otp} setOtp={(o) => setOtp(o)} />
+              {showErrors["otp"].error && <p className={"text-red-500 text-sm"}>{showErrors["otp"].message}</p>}
+                <OtpVerify otp={otp} setOtp={(o) => setOtp(o)} isInvalid={showErrors["otp"].error}/>
                 {counter}
               </ModalBody>
               <ModalFooter className={"justify-between"}>

@@ -1,10 +1,11 @@
 export const getDefaultError = () => {
   return {
-    fullName: { error: false, message: "", },
-    "u-name": { error: false, message: "", },
-    email: { error: false, message: "", },
-    password: { error: false, message: "", },
-    main: { error: false, message: "", },
+    fullName: { error: false, message: "", data: ""},
+    "u-name": { error: false, message: "", data: ""},
+    email: { error: false, message: "", data: ""},
+    password: { error: false, message: "", data: ""},
+    otp: { error: false, message: "", data: ""},
+    main: { error: false, message: "", data: ""},
   };
 };
 

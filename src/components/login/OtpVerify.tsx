@@ -1,13 +1,18 @@
 "use client";
 
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useRef, useEffect } from "react";
+
+import {cn} from "@/lib/utils";
+
 
 export const OtpVerify = ({
   otp,
   setOtp,
+  isInvalid,
   }: {
   otp: string;
   setOtp: (otp: string) => void;
+  isInvalid: boolean;
 }) =>{
 
   const otpRef = useRef<(HTMLInputElement | null)[]>([]);
@@ -23,9 +28,10 @@ export const OtpVerify = ({
         ref={(el) => {
           otpRef.current[i] = el; // Assign ref
         }}
-        className={
-          "w-10 h-10 text-center text-2xl font-medium rounded-md shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 "
-        }
+        className={cn(
+          "w-10 h-10 text-center text-2xl font-medium rounded-md shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)] focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 ",
+          isInvalid ? "ring-2 ring-red-500 dark:ring-red-400" : "ring-2 ring-primary-500 dark:ring-primary-400"
+        )}
         type={"text"}
         maxLength={1}
         value={otp[i] || ""} // Ensure otp has a value for the current index
@@ -65,7 +71,7 @@ export const OtpVerify = ({
       />
     ));
     return inputs;
-  }, [otp]);
+  }, [otp, isInvalid]);
 
   return (
     <div className={"w-full h-auto py-3 px-2 flex items-center justify-center"}>

@@ -10,10 +10,13 @@ export interface TypesMutation {
   fn: (data: any) => Promise<{token: string, user: UserTypes}>,
 }
 
+export interface E { error: boolean, message: string, data?: any }
+
 export interface ErrorTypes {
-  fullName: { error: boolean, message: string },
-  "u-name": { error: boolean, message: string },
-  email: { error: boolean, message: string },
-  password: { error: boolean, message: string },
-  main: { error: boolean, message: string },
+  fullName: E,
+  "u-name": E,
+  email: E,
+  password: E,
+  otp: E,
+  main: E,
 }
