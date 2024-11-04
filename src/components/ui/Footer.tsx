@@ -27,12 +27,12 @@ export const Footer = () => {
       </div>
       <div className={"flex gap-3"}>
         <LinkPreview url={"/"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
-          portfolio
-        </LinkPreview>
-        <LinkPreview url={"https://bapparaj.me"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
           Product
         </LinkPreview>
-        <LinkPreview url={"https://bapparaj.me"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
+        <LinkPreview url={"https://bapparaj.tech"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
+          portfolio
+        </LinkPreview>
+        <LinkPreview url={"https://quiz-app-amber-chi.vercel.app/"} imgurl={"/images/hero-bar-dark.png"} className={"font-bold"}>
           Quiz Game
         </LinkPreview>
       </div>
