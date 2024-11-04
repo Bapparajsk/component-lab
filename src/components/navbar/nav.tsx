@@ -161,8 +161,7 @@ export default function AppNavbar() {
                 <NavbarItem>
                     {user ? (
                           <Tooltip
-                            content={user?.name && <TolContent name={user.name}/>}
-                            onClick={() => router.push("/profile")}
+                            content={user?.name && user?.description && user?.displayName && <TolContent name={user.name}/>}
                           >
                               <User
                                 name={user?.name || "John"}
@@ -172,9 +171,9 @@ export default function AppNavbar() {
                                       {user?.displayName || "@john"}
                                   </Link>
                                 )}
-
+                                onClick={() => router.push("/profile")}
                                 avatarProps={{
-                                    src: "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
+                                    src: user?.userImage || "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
                                     className: "cursor-pointer"
                                 }}
                               />

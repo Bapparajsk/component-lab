@@ -1,14 +1,25 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import UserDetails from "@/components/profile/UserDetails";
 import { Card } from "@/components/postPage/Card";
+import { useUser } from "@/context/UserContext";
+
 
 const Page = () => {
+  const router = useRouter();
+  const { user } = useUser();
+  
+  if (!user) {
+    router.replace("/login");
+    return null;
+  }
 
   return (
-    <div className={"h-auto w-full"}>
+    <div className={"h-auto w-full border-r border-gray-600 max-w-[1800px] mx-auto"}>
       <div className={"w-auto h-auto"}>
-        <UserDetails />
+        <UserDetails user={user}/>
       </div>
       <div className={"w-full h-16 border-b border-gray-600  mb-5 flex items-center justify-between px-10"}>
         <div className={"w-auto h-auto"}>
