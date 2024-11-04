@@ -105,6 +105,13 @@ export const LoginComponent = () => {
 
     // * Login User mutation
     if (isLoginMode) {
+
+      if (mutation.isPending) return;
+      if(showErrors.main.error && showErrors.email.data === email && showErrors.password.data === password ) {
+        setShowErrors({ ...showErrors, main: { error: true, message: "Please enter different Credentials...!" }});
+        return;
+      }
+
       mutation.mutate({
         data: { email, password }, fn: login,
         onSuccess: (data) => {
@@ -128,8 +135,8 @@ export const LoginComponent = () => {
           setShowErrors({
             ...getDefaultError(),
             main: { error: true, message: "Invalid Credentials, Please try again..." },
-            email: { error: true, message: "Email or password is incorrect" },
-            password: { error: true, message: "Email or password is incorrect" },
+            email: { error: true, message: "Email is incorrect", data: email },
+            password: { error: true, message: "Password is incorrect",  data: password },
           });
         }
       });
