@@ -43,7 +43,7 @@ const menuItems = [
 export default function AppNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [active, setActive] = useState<string | null>(null);
-    const { isUserLoggedIn, user } = useUser();
+    const { user } = useUser();
     const router = useRouter();
 
     const links = [
@@ -159,7 +159,7 @@ export default function AppNavbar() {
                     </Button>
                 </NavbarItem>
                 <NavbarItem>
-                    {isUserLoggedIn() ? (
+                    {user ? (
                           <Tooltip
                             content={user?.name && <TolContent name={user.name}/>}
                             onClick={() => router.push("/profile")}

@@ -4,11 +4,11 @@ import axios from "./axios";
 
 
 export const fetchUser = async (token: string): Promise<UserTypes> => {
-  console.log("fetchUser", token);
   
   const response = await axios.get("/user", {
     headers: { authorization: token }
   });
-
-  return response.data.user as UserTypes;
+  console.log(response.data.data.user, "response.data.data.user");
+  
+  return response.data.data.user as UserTypes;
 };

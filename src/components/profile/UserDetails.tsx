@@ -1,6 +1,5 @@
 "use client";
 
-import { ReactNode } from "react";
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { IconBrandGithub, IconBrandTwitter, IconBrandLinkedin, IconLink } from "@tabler/icons-react";
@@ -46,31 +45,37 @@ export default function UserDetails() {
                         <div className={"w-full h-36 flex items-center justify-evenly border-b border-gray-600 font-rubik"}>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center "}>
                                 <p className={"text-2xl font-bold"}>Tweets</p>
-                                <p>{user?.posts}</p>
+                                <p>{user?.posts || 0}</p>
                             </div>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center"}>
                                 <p className={"text-2xl font-bold"}>Following</p>
-                                <p>{user?.following}</p>
+                                <p>{user?.following || 0}</p>
                             </div>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center"}>
                                 <p className={"text-2xl font-bold"}>Followers</p>
-                                <p>{user?.followers}</p>
+                                <p>{user?.followers || 0}</p>
                             </div>
                             <div className={"w-1/6 h-full flex flex-col items-center justify-center"}>
                                 <p className={"text-2xl font-bold"}>Likes</p>
-                                <p>{user?.liked}</p>
+                                <p>{user?.liked || 0}</p>
                             </div>
                         </div>
                         <div className={"w-full h-full flex flex-col items-start justify-start gap-2 px-5 py-4 font-rubik"}>
-                            {
-                                user?.links.map((link, index) => (
-                                    <UserLinker
-                                        key={index}
-                                        link={link.url}
-                                        title={link.title}
-                                    />
-                                ))
-                            }
+                            {user?.links.map((link, index) => (
+                                <UserLinker
+                                    key={index}
+                                    link={link.url}
+                                    title={link.title}
+                                />
+                            ))}
+                            {Array.from({ length: 5 - ( user?.links.length || 0) }).map((_, index) => (
+                                <UserLinker
+                                    key={index}
+                                    link={"add new link"}
+                                    title={"google"}
+                                    onClick={() => console.log("add new link")}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -98,17 +103,25 @@ function UserLinker({
     title,
     className,
     linkClassName,
+    onClick,
 }: {
     link: string;
     title: string;
     className?: string;
     linkClassName?: string;
+    onClick?: () => void;
 }) {
     return (
         <div className={cn("w-full h-auto flex items-center justify-start gap-2 group", className)}>
             {findIcon(title)}
             <p
-                onClick={() => { window.open(link, "_blank"); }}
+                onClick={() => { 
+                    if(onClick) {
+                        onClick();
+                        return;
+                    }
+                    window.open(link, "_blank");
+                }}
                 className={cn("cursor-pointer group-hover:underline group-hover:text-blue-500 text-sm text-gray-800 dark:text-gray-500", linkClassName)}>
                 {link.length > 65 ? `${link.slice(0, 65)}...` : link}
             </p>

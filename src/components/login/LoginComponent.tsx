@@ -85,7 +85,7 @@ export const LoginComponent = () => {
     mutationFn: async ({ data, fn, onSuccess, onError }: { data: any, fn: (data: any) => Promise<any>, onSuccess: (data: any) => void, onError?: (error: any) => void }) => {
       try {
         const response = await fn(data);
-        onSuccess(response.data);
+        onSuccess(response);
       } catch (error) {
         if (onError) {
           onError(error);
@@ -191,8 +191,6 @@ export const LoginComponent = () => {
   };
 
   function verifyOtpHandler() {
-    onOpenChange();
-
     if (mutation.isPending) return;
     if (otp.length !== 4) {
       setShowErrors({ ...getDefaultError(), otp: { error: true, message: "Please enter 4 digit OTP", data: otp } });
