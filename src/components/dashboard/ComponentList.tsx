@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Pagination } from "@nextui-org/react";
+import { Button, Chip, Input, Pagination } from "@nextui-org/react";
 import { IconBookUpload } from "@tabler/icons-react";
-import { useRouter  } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
 import { PostCard, QueryButton } from "@/components/dashboard";
-import axios from "@/lib/axios";
+import { Each } from "@/hook/useEach";
 
 
 type PostCard = {
@@ -16,7 +16,7 @@ type PostCard = {
   description: string;
   uploadDate?: Date;
   verifyDate?: Date;
-  progress?: string;
+  progress?: "pending" | "approved" | "creating-files" | "completed" | "rejected";
   likes?: Map<string, string>;
   codePreview?: Map<string, string>;
   tags?: string[];
@@ -120,7 +120,7 @@ const TempPostCard: PostCard[] = [
     description: "A simple alert component",
     likes: new Map<string, string>(),
     codePreview: new Map<string, string>(),
-    tags: ["alert", "component"],
+    tags: ["alert", "component", "alert", "component", "alert", "component", "alert", "component"],
     createdAt: new Date(),
   },
   {
@@ -160,9 +160,14 @@ const TempPostCard: PostCard[] = [
   }
 ];
 
+const sortList = ["All", "Uploading", "Approved", "Creating files", "Completed"];
+const tagList = ["All", "Button", "Input", "Card", "Modal", "Alert", "Select", "Checkbox"];
+
 export const ComponentList = () => {
   const [pageNumber, setPageNumber] = useState(1);
-
+  const [components, setComponents] = useState<PostCard[]>([]);
+  const [tags, setTags] = useState<string[]>(["All"]);
+  const [sortTag, setSortTag] = useState("Completed");
   const router = useRouter();
 
   const { data, isLoading } = useQuery({
@@ -184,6 +189,7 @@ export const ComponentList = () => {
           post.codePreview.set("6", "6");
         }
       });
+      setComponents(TempPostCard);
       return {posts: TempPostCard};
     },
   });
@@ -191,7 +197,7 @@ export const ComponentList = () => {
   return (
     <div className={"w-full h-auto py-4 px-3 flex gap-x-2 flex-col items-center"}>
       <div className={"w-full h-auto flex flex-col gap-5 max-w-6xl"}>
-        <div className={"w-full h-auto flex gap-2"}>
+        <div className={"w-full h-auto flex flex-col gap-2 sm:flex-row"}>
           <div className={"w-full h-auto "}>
             <Input
               variant={"bordered"}
@@ -203,24 +209,51 @@ export const ComponentList = () => {
             />
           </div>
           <div className={"w-auto h-auto flex gap-2"}>
-            <QueryButton title={"Tag"} onClick={(key) => (console.log(key))}/>
-            <QueryButton title={"Sort"} onClick={(key) => (console.log(key))}/>
-            <Button onPress={() => router.push("/upload")} startContent={<IconBookUpload size={20} />} className={"text-white font-bold bg-[#4F913D]"}>
+            <QueryButton isDisabled={ sortTag !== "Completed" } values={tags} title={"Tag"} items={tagList} onClick={(key) => {
+              const newTag = tagList[key as number];
+              if (newTag === "All") {
+                setTags(["All"]);
+                return;
+              }
+              let filter = [...tags];
+              if (filter[0] === "All") {
+                filter = filter.splice(1);
+                console.log(filter, newTag);
+              }
+
+              if (filter.includes(newTag)) {
+                setTags(filter.filter((tag) => tag !== newTag));
+              } else {
+                setTags([...filter, newTag]);
+              }
+
+            }} />
+            <QueryButton value={sortTag} title={"Sort"} items={sortList} onClick={(idx) => {
+              const key = sortList[idx as number];
+              setSortTag(key);
+
+              if(key !== "Completed") {
+                setTags(["All"]);
+              }
+            }} />
+            <Button onPress={() => router.push("/upload")} startContent={<IconBookUpload size={20} />}
+                    className={"text-white font-bold bg-[#4F913D] grow"}>
               New
             </Button>
           </div>
+        </div>
+        <div className={"w-full h-auto flex flex-wrap gap-2"}>
+          <Chip color={"success"} variant={"faded"}> Sort: {sortTag}</Chip>
+          <Each of={tags} render={(item, index) => (
+            <Chip color={"success"} variant={"dot"} key={index}>{item}</Chip>
+          )}/>
         </div>
         {isLoading && (
           <div className={"w-full h-auto flex items-center justify-center"}>
             <p>Loading...</p>
           </div>
         )}
-        {data?.posts.map((post: any) => (
-            <PostCard
-              key={post.id}
-              {...post}
-            />
-        ))}
+        <Each of={components} render={(post) => <PostCard key={post.id} {...post}/>}/>
         <div className={"w-full h-auto flex justify-end"}>
           <Pagination
             showShadow={true}
@@ -229,7 +262,9 @@ export const ComponentList = () => {
             // total={data?.totalPages || 1}
             total={1}
             initialPage={1}
-            onChange={(page: number) => { setPageNumber(page); }}
+            onChange={(page: number) => {
+              setPageNumber(page);
+            }}
           />
         </div>
       </div>

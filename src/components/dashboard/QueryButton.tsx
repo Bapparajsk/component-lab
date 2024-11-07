@@ -2,19 +2,24 @@
 
 import { Key, memo, useState } from "react";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { IconCaretDownFilled } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconCheck } from "@tabler/icons-react";
+
+import { cn } from "@/lib/utils";
 
 type QueryButtonProps = {
   title: string;
-  items?: Array<{ id: string; value: string }>;
+  items?: Array<string>;
   onClick?: (key: Key) => void;
+  value?: string;
+  values?: Array<string>;
+  isDisabled?: boolean;
+
 }
 
-const QueryButton = memo(function QueryButton ({ title, items, onClick }: QueryButtonProps) {
+const QueryButton = memo(function QueryButton ({ title, items, onClick, value, values, isDisabled}: QueryButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log("sdfjn");
   return (
-    <Dropdown onOpenChange={(isOpen) => {
+    <Dropdown isDisabled={isDisabled} onOpenChange={(isOpen) => {
       setIsOpen(isOpen);
     }}>
       <DropdownTrigger>
@@ -28,8 +33,14 @@ const QueryButton = memo(function QueryButton ({ title, items, onClick }: QueryB
       </DropdownTrigger>
       {items &&
         <DropdownMenu onAction={onClick} >
-          {items.map((item) => (
-            <DropdownItem key={item.id}>{item.value}</DropdownItem>
+          {items.map((item, idx) => (
+            <DropdownItem
+              key={idx}
+              className={cn((value === item || values?.includes(item)) && "bg-emerald-600", )}
+              endContent={(value === item || values?.includes(item)) && <IconCheck/>}
+            >
+              {item}
+            </DropdownItem>
           ))}
         </DropdownMenu>
       }

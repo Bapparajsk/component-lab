@@ -7,22 +7,23 @@ import { NumberTicker } from "@/components/ui/number-ticker";
 import { cn } from "@/lib/utils";
 
 type CardProps = {
-  id: string | null,
-  title: string,
-  description?: string,
+  id: string;
+  title: string;
+  description: string;
+  uploadDate?: Date;
+  verifyDate?: Date;
   progress?: "pending" | "approved" | "creating-files" | "completed" | "rejected";
-  likes: Map<string, string>,
-  codePreview: Map<string, string>,
-  tags: string[],
-  timeProgress: {
+  likes?: Map<string, string>;
+  codePreview?: Map<string, string>;
+  tags?: string[];
+  createdAt?: Date;
+  timeProgress?: {
     step1: string,
-    date: Date | "progress" | "-",
-  }[],
+    date: Date | string,
+  }[];
 };
 
 const getColorByProgress = (progress: string | undefined) => {
-
-
   switch (progress) {
     case "pending":
       return "#7CF5FF";
@@ -33,7 +34,7 @@ const getColorByProgress = (progress: string | undefined) => {
     case "rejected":
       return "#D91656";
     default:
-      return "";
+      return "#FFFFFF";
   }
 };
 
@@ -49,17 +50,13 @@ export const PostCard = ({
 }: CardProps) => {
   const router = useRouter();
 
-  const d = new Date();
-  d.toDateString();
-
   return (
     <div className={cn("w-full h-auto min-h-28 flex items-center justify-center  rounded-md ")}>
       <div
-        className={cn("w-full flex border-b", `border-[${getColorByProgress(progress)}] shadow-[inset_0px_-50px_50px_-50px_${getColorByProgress(progress)}]`)}
-        style={{ borderColor: getColorByProgress(progress), backgroundColor: getColorByProgress(progress) + "12" }}
+        className={cn("w-full border-b flex flex-col sm:flex-row", `border-[${getColorByProgress(progress)}] shadow-[inset_0px_-50px_50px_-50px_${getColorByProgress(progress)}]`)}
+        style={{ borderColor: getColorByProgress(progress), backgroundColor : progress && getColorByProgress(progress) + "12" }}
       >
-        <div className={`h-auto flex flex-col items-start justify-between gap-y-3 px-3 py-4 font-rubik`}
-             style={{ width: progress ? "100%" : "50%" }}>
+        <div className={cn(`w-full h-auto flex flex-col items-start justify-between gap-y-3 px-3 py-4 font-rubik `, )}>
           <div className={"w-full flex items-center justify-between"}>
             <h1
               onClick={() => router.push(`/components/button/${id}`)} // Path: src/components/button/[id].tsx
@@ -76,7 +73,7 @@ export const PostCard = ({
               </p>
             </div>
           )}
-          <div className={"flex flex-wrap gap-4 items-center justify-start"}>
+          <div className={"w-full flex flex-wrap gap-4 items-center justify-start"}>
             {tags && tags.map((t, idx) => (
               <Button key={idx}>{t}</Button>
             ))}
@@ -95,8 +92,8 @@ export const PostCard = ({
             </div>
           </div>}
         </div>
-        {codePreview && <div className={"w-1/2 h-full my-auto"}>
-          <div className={"w-full h-full flex flex-col items-center justify-center gap-y-3 text-2xl font-bold"}>
+        {codePreview && <div className={"w-full sm:w-1/2 h-full my-auto"}>
+          <div className={"w-full h-full flex flex-col items-center justify-center gap-y-3 text-2xl font-bold mb-5 sm:mb-0"}>
             <div className={"flex items-center gap-5"}>
               <p>Like</p>
               {likes ? (<NumberTicker value={likes.size} />) : (<p className={"text-red-500"}>-</p>)}
