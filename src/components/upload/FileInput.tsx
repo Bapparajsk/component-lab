@@ -23,42 +23,12 @@ const FileInput = () => {
 
   const mutation = useMutation({
     mutationKey: ["createComponent"],
-    mutationFn: async ({ componentName, githubUrl, description }: {
+    mutationFn: async ({ componentName, githubUrl, description, token }: {
       componentName: string,
       githubUrl: string,
       description: string | undefined
+      token: string
     }) => {
-      if (!componentName) {
-        errorContext.set("componentName", { message: "Component name is required", data: componentName });
-      } else {
-        errorContext.clear("componentName");
-      }
-
-      if (!githubUrl) {
-        errorContext.set("githubUrl", { message: "Github url is required", data: githubUrl });
-      } else {
-        errorContext.clear("githubUrl");
-      }
-
-      if (!(await isValidRepoUrl(githubUrl))) {
-        errorContext.set("githubUrl", { message: "Invalid github url", data: githubUrl });
-      } else {
-        errorContext.clear("githubUrl");
-      }
-
-      if (errorContext.isAnyError()) {
-        errorContext.set("main", { message: "Please fix the error before submitting", data: "" });
-        return;
-      } else {
-        errorContext.clear("main");
-      }
-
-      const token = localStorage.getItem("user-token");
-      if (!token) {
-        errorContext.set("main", { message: "You are not logged in", data: "" });
-        router.replace("/login");
-        return;
-      }
 
       await AppServer.post("/post/upload", {
         title: componentName, url: githubUrl, description
@@ -74,6 +44,12 @@ const FileInput = () => {
       }
 
       const { response } = error;
+      if (response?.status === 500) {
+        errorContext.clear();
+        errorContext.set("main", { message: "An error occurred..!", data: "" });
+        return;
+      }
+
       if (response?.status === 401) {
         errorContext.set("main", { message: "You are not logged in", data: "" });
         router.replace("/login");
@@ -82,6 +58,16 @@ const FileInput = () => {
 
       if (response?.status === 400) {
         errorContext.clear();
+
+        if(response.data.message === "invalid url") {
+          errorContext.set("githubUrl", { message: "Invalid github url", data: "" });
+        }
+
+        if(response.data.message === "post already added") {
+          errorContext.set("componentName", { message: "Component already added", data: "" });
+          errorContext.set("githubUrl", { message: "Component already added", data: "" });
+        }
+
         errorContext.set("main", { message: response.data.message, data: "" });
         return;
       }
@@ -91,14 +77,47 @@ const FileInput = () => {
     }
   });
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = {
       componentName: inputRef.current[0].value,
       githubUrl: inputRef.current[1].value,
       description: descriptionRef.current?.value
     };
-    mutation.mutate(data);
+
+    if (!data.componentName) {
+      errorContext.set("componentName", { message: "Component name is required", data: data.componentName });
+    } else {
+      errorContext.clear("componentName");
+    }
+
+    if (!data.githubUrl) {
+      errorContext.set("githubUrl", { message: "Github url is required", data: data.githubUrl });
+    } else {
+      errorContext.clear("githubUrl");
+    }
+
+    if (!(await isValidRepoUrl(data.githubUrl))) {
+      errorContext.set("githubUrl", { message: "Invalid github url", data: data.githubUrl });
+    } else {
+      errorContext.clear("githubUrl");
+    }
+
+    if (errorContext.isAnyError().length > 0) {
+      console.log(errorContext.isAnyError());
+      errorContext.set("main", { message: "Please fix the error before submitting", data: "" });
+      return;
+    } else {
+      errorContext.clear("main");
+    }
+
+    const token = localStorage.getItem("user-token");
+    if (!token) {
+      errorContext.set("main", { message: "You are not logged in", data: "" });
+      router.replace("/login");
+      return;
+    }
+    mutation.mutate({...data, token});
   };
 
   return (
