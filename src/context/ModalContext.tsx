@@ -1,36 +1,34 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { Modal, ModalContent, useDisclosure, ModalProps } from "@nextui-org/modal";
+import { createContext,  useContext, useEffect, useState } from "react";
+import { Modal, useDisclosure, ModalProps, ModalContent } from "@nextui-org/modal";
 
 type ModalContextType = {
-    openModal: ({children, opction}: {children: ReactNode, opction: ModalProps}) => void;
+    openModal: (opction: ModalProps) => void;
     closeModal: () => void;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
 
 const ModalProvider = ({ children }: { children: React.ReactNode }) => {
-    const [modalChildren, setModalChildren] = useState<ReactNode>(undefined);
     const [opction, setOpction] = useState<ModalProps>();
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
     useEffect(() => {
         if (!isOpen) {
-            setModalChildren(undefined);
             setOpction(undefined);
         };
+        console.log("isOpen", isOpen);
+        
     }, [isOpen]);
 
-    const openModal = ({ children, opction }: { children: ReactNode, opction: ModalProps }) => {
-        setModalChildren(children);
-        setOpction(opction);
+    const openModal = (modal: ModalProps) => {
+        setOpction(modal);
         onOpen();
     };
 
     const closeModal = () => {
         onClose();
-        setModalChildren(undefined);
         setOpction(undefined);
     };
     
@@ -41,7 +39,9 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} {...opction}>
                 <ModalContent>
                     {() => (
-                        <> {modalChildren} </>
+                        <>
+                            {opction?.children}
+                        </>
                     )}
                 </ModalContent>
             </Modal>

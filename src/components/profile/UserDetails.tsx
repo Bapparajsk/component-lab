@@ -2,17 +2,50 @@
 
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
+import { ModalContent, ModalHeader, ModalBody, ModalFooter, ModalProps, Textarea } from "@nextui-org/react";
 
 import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { UserTypes } from "@/types/user";
+import { useModal } from "@/context/ModalContext";
 
-export default function UserDetails({user}: {user: UserTypes}) {
-
-    const imageUrls = "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+const imageUrls = "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
     const imageUrl =
         "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg";
+
+export default function UserDetails({user}: {user: UserTypes}) {
+
+    const { openModal, closeModal } = useModal();
+
+    const handleAddDescription = () => {
+        const moadl: ModalProps = {
+            children: (
+                <ModalContent>
+                    {() => (
+                        <>
+                            <ModalHeader>
+                                <h2 className={"text-3xl font-bold"}>Add Description</h2>
+                            </ModalHeader>
+                            <ModalBody>
+                                <p className={"text-lg text-gray-600"}>
+                                    Add a description to your profile to let others know more about you.
+                                </p>
+                                <Textarea fullWidth={true} placeholder={"Add a description"} />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color={"default"} variant={"faded"} onPress={closeModal}>Cancel</Button>
+                                <Button color={"primary"}>Save</Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            ),
+            isDismissable: false,
+            backdrop: "blur",
+        };
+        openModal(moadl);
+    };
 
     return (
         <div className={"w-full h-auto min-h-80 border-b border-gray-600 flex items-center flex-col 2xl:flex-row"}>
@@ -24,15 +57,14 @@ export default function UserDetails({user}: {user: UserTypes}) {
                             <p className={"font-normal text-sm"}>{user?.displayName}</p>
                         </DirectionAwareHover>
                     </div>
-                    <div className={"w-full h-full flex flex-col items-start gap "}>
+                    <div className={"w-full min-w-60 h-full flex flex-col items-start gap "}>
                         <div className={"h-full font-rubik  flex flex-col items-start justify-between"}>
                             <p className={"text-4xl "}>{user?.name}</p>
                             <p className={"text-2xl text-gray-500"}>{user?.displayName} {user?.gender && <span>. {user?.gender}</span>}</p>
                             <p className={"text-medium text-gray-800 dark:text-gray-400"}>
-                                {/* {user?.description || (
-                                    <span className={"text-blue-500 font-bold hover:underline cursor-pointer"}>add Description</span>
-                                )} */}
-sdweior ewryuwer weu6r23 dsogiasef weu6rqwer dflijwerf asdfytqwerjkdf asduftwerj xdfyugqwse0rfjqwef asdfgyqwe9rfw f
+                                {user?.description || (
+                                    <span className={"text-blue-500 font-bold hover:underline cursor-pointer"} onClick={handleAddDescription}>add Description</span>
+                                )}
 
                             </p>
                             <Button  className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
