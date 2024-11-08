@@ -1,10 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { cn } from "@/lib/utils";
+import { Each } from "@/hook/useEach";
+
 
 type CardProps = {
   id: string;
@@ -17,10 +20,12 @@ type CardProps = {
   codePreview?: Map<string, string>;
   tags?: string[];
   createdAt?: Date;
-  timeProgress?: {
-    step1: string,
-    date: Date | string,
-  }[];
+  timeLine?: {
+    upload: string;
+    approved: string;
+    "creating-files": string;
+    completed: string;
+  }
 };
 
 const getColorByProgress = (progress: string | undefined) => {
@@ -42,7 +47,7 @@ export const PostCard = ({
   id,
   title,
   description,
-  timeProgress,
+  timeLine,
   progress,
   likes,
   codePreview,
@@ -50,13 +55,21 @@ export const PostCard = ({
 }: CardProps) => {
   const router = useRouter();
 
+  useEffect(() => {
+    if (timeLine) {
+      console.log(timeLine["creating-files"]);
+      
+      
+    }
+  }, []);
+
   return (
     <div className={cn("w-full h-auto min-h-28 flex items-center justify-center  rounded-md ")}>
       <div
         className={cn("w-full border-b flex flex-col sm:flex-row", `border-[${getColorByProgress(progress)}] shadow-[inset_0px_-50px_50px_-50px_${getColorByProgress(progress)}]`)}
-        style={{ borderColor: getColorByProgress(progress), backgroundColor : progress && getColorByProgress(progress) + "12" }}
+        style={{ borderColor: getColorByProgress(progress), backgroundColor: progress && getColorByProgress(progress) + "12" }}
       >
-        <div className={cn(`w-full h-auto flex flex-col items-start justify-between gap-y-3 px-3 py-4 font-rubik `, )}>
+        <div className={cn(`w-full h-auto flex flex-col items-start justify-between gap-y-3 px-3 py-4 font-rubik `,)}>
           <div className={"w-full flex items-center justify-between"}>
             <h1
               onClick={() => router.push(`/components/button/${id}`)} // Path: src/components/button/[id].tsx
@@ -64,7 +77,7 @@ export const PostCard = ({
             >{title} <span className={"text-sm"}> {progress === "rejected" && "Your component hash ben rejected"}</span>
             </h1>
             {progress && <Button onClick={() => router.push(`/components/button/${id}`)} size={"sm"} variant={"flat"}
-                                 color={"danger"}>{progress === "rejected" ? "Delete" : "Edit"}</Button>}
+              color={"danger"}>{progress === "rejected" ? "Delete" : "Edit"}</Button>}
           </div>
           {description && (
             <div>
@@ -80,15 +93,20 @@ export const PostCard = ({
           </div>
           {progress && progress !== "rejected" && <div className={"w-full py-3"}>
             <div className={"w-full h-auto flex flex-col justify-between items-start text-sm relative gap-5"}>
-              {timeProgress && timeProgress.map((item, index) => (
+              <Each of={[
+                { step1: "Upload", date: timeLine?.upload },
+                { step1: "Approved", date: timeLine?.approved },
+                { step1: "Creating Files", date: timeLine?.["creating-files"] },
+                { step1: "Completed", date: timeLine?.completed }
+              ]} render={(item, index) => (
                 <div key={index} className={"flex items-start justify-start gap-2 relative px-5"}>
-                  <p>{item.step1}</p>
+                  <p>{item.step1} : </p>
                   <p>{
-                    item.date === "progress" ? "progress..." : item.date == "-" ?  " -" : new Date(item.date).toDateString()
+                    item.date === "progress" ? "progress..." : item.date == "-" ?  " -" : item.date
                   }</p>
                 </div>
-              ))}
-              <div className={"absolute top-0 left-0 h-full w-[2px] -z-10 rounded-md"} style={{ backgroundColor: getColorByProgress(progress) }}/>
+              )}/>
+              <div className={"absolute top-0 left-0 h-full w-[2px] -z-10 rounded-md"} style={{ backgroundColor: getColorByProgress(progress) }} />
             </div>
           </div>}
         </div>

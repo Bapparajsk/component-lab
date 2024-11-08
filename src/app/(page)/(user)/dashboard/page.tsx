@@ -1,9 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { ComponentList } from "@/components/dashboard";
-import { useUser } from "@/context/UserContext";
 
 const Page = () => {
 
