@@ -5,7 +5,7 @@ import { Modal, ModalContent, useDisclosure, ModalProps } from "@nextui-org/moda
 
 type ModalContextType = {
     openModal: ({children, opction}: {children: ReactNode, opction: ModalProps}) => void;
-    
+    closeModal: () => void;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -13,7 +13,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     const [modalChildren, setModalChildren] = useState<ReactNode>(undefined);
     const [opction, setOpction] = useState<ModalProps>();
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
     useEffect(() => {
         if (!isOpen) {
@@ -28,9 +28,15 @@ const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         onOpen();
     };
 
+    const closeModal = () => {
+        onClose();
+        setModalChildren(undefined);
+        setOpction(undefined);
+    };
+    
     
     return (
-        <ModalContext.Provider value={{ openModal }}>
+        <ModalContext.Provider value={{ openModal, closeModal }}>
             {children}
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} {...opction}>
                 <ModalContent>
