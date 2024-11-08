@@ -46,12 +46,8 @@ export const ComponentList = () => {
 
       const token = localStorage.getItem("user-token");
       const response = await axios.get(`/post/list?env=all&page=${page-1}`, {
-        headers: {
-          "authorization": token
-        }
+        headers: { "authorization": token }
       });
-      console.log(response.data.data);
-      
       setComponents(response.data.data.posts);
       return response.data.data;
     },

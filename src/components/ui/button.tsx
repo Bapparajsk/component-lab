@@ -66,7 +66,8 @@ const cnRainbowButton = ({ children, ...props }: RainbowButtonProps) => {
     );
 };
 
+
 export {
     RainbowButton,
-    cnRainbowButton
+    cnRainbowButton,
 };
