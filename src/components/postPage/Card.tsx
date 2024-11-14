@@ -7,20 +7,23 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 import { ToolTipCard } from "@/components/postPage/ToolTipCard";
+import { useJSX } from "@/hook/useJSX";
+
 
 const MotionIconHeart = motion.create(IconHeart);
 const MotionIconHeartFilled = motion.create(IconHeartFilled);
 
 export const Card = ({
-  containerHeight,
   isLeft = true,
   setAnimation = true,
-  editButton = false
+  editButton = false,
+  component,
 }: {
-  containerHeight: number;
+  containerHeight?: number;
   isLeft?: boolean;
   setAnimation?: boolean;
   editButton?: boolean;
+  component?: string;
 }) => {
   const [mood, setMood] = useState<"preview" | "code">("preview");
   const [likeCount, setLikeCount] = useState<number>(100);
@@ -140,11 +143,8 @@ export const Card = ({
           Edit
         </Button>}
       </div>
-      <div
-        className={`w-full border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50`}
-        style={{ minHeight: containerHeight }}
-      >
-
+      <div className={`h-auto w-full border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50`} >
+        {useJSX(component)}
       </div>
     </div>
   );

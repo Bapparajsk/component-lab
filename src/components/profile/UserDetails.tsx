@@ -2,47 +2,78 @@
 
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
-import { ModalContent, ModalHeader, ModalBody, ModalFooter, ModalProps, Textarea } from "@nextui-org/react";
+import { ModalHeader, ModalBody, ModalFooter, ModalProps, Textarea } from "@nextui-org/react";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { UserTypes } from "@/types/user";
 import { useModal } from "@/context/ModalContext";
+import { useUser } from "@/context/UserContext";
+import AppClient from "@/lib/axios";
+
 
 const imageUrls = "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
-    const imageUrl =
-        "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg";
+const imageUrl =
+    "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg";
 
-export default function UserDetails({user}: {user: UserTypes}) {
+export default function UserDetails({ user }: { user: UserTypes }) {
 
     const { openModal, closeModal } = useModal();
+    const { getToken } = useUser();
+    const router = useRouter();
+ 
+    const updateMoction = useMutation({
+        mutationKey: ["form-mutation", "update-description"],
+        mutationFn: async ({path, data}: {path: string, data: any}) => {
+            const token = getToken();
+
+            if (!token) {
+                throw new Error("Token is missing");
+            }
+
+            await AppClient.patch(path, data, {
+                headers: { authorization: token },
+            });
+
+            return true;
+        },
+        onError: (error) => {
+            if(error.message === "Token is missing") {
+                console.log("Token is missing");
+                router.replace("/login");
+            }
+        },
+        onSuccess: (data) => {
+            if (data === true) {
+                closeModal();
+            }
+        }
+    });
 
     const handleAddDescription = () => {
         const moadl: ModalProps = {
             children: (
-                <ModalContent>
-                    {() => (
-                        <>
-                            <ModalHeader>
-                                <h2 className={"text-3xl font-bold"}>Add Description</h2>
-                            </ModalHeader>
-                            <ModalBody>
-                                <p className={"text-lg text-gray-600"}>
-                                    Add a description to your profile to let others know more about you.
-                                </p>
-                                <Textarea fullWidth={true} placeholder={"Add a description"} />
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color={"default"} variant={"faded"} onPress={closeModal}>Cancel</Button>
-                                <Button color={"primary"}>Save</Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
+                <>
+                    <ModalHeader>
+                        <h2 className={"text-3xl font-bold"}>Add Description</h2>
+                    </ModalHeader>
+                    <ModalBody>
+                        <p className={"text-lg text-gray-600"}>
+                            Add a description to your profile to let others know more about you.
+                        </p>
+                        <Textarea fullWidth={true} placeholder={"Add a description"} />
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color={"default"} variant={"faded"} isDisabled={updateMoction.isPending} onPress={closeModal}>Cancel</Button>
+                        <Button color={"primary"} isDisabled={updateMoction.isPending} >Save</Button>
+                    </ModalFooter>
+                </>
             ),
-            isDismissable: false,
             backdrop: "blur",
+            
         };
         openModal(moadl);
     };
@@ -65,9 +96,8 @@ export default function UserDetails({user}: {user: UserTypes}) {
                                 {user?.description || (
                                     <span className={"text-blue-500 font-bold hover:underline cursor-pointer"} onClick={handleAddDescription}>add Description</span>
                                 )}
-
                             </p>
-                            <Button  className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
+                            <Button className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
                                 Edit Profile
                             </Button>
                         </div>
@@ -79,18 +109,18 @@ export default function UserDetails({user}: {user: UserTypes}) {
                     <div className={"w-16 h-16"}>
                         <Image src={imageUrls} alt={"profile"} width={100} height={100} className={"w-full h-full object-cover"} style={{
                             borderRadius: "50%"
-                        }}/>
+                        }} />
                     </div>
                     <div className={"w-auto h-auto grow flex gap-3 items-center justify-center font-rubik"}>
-                        <div className={"flex flex-col items-center text-medium"}>   
+                        <div className={"flex flex-col items-center text-medium"}>
                             {user?.posts ? <NumberTicker value={user?.posts} /> : <p>-</p>}
                             <p className={"text-neutral-500"}>Tweets</p>
                         </div>
-                        <div className={"flex flex-col items-center text-medium"}>   
+                        <div className={"flex flex-col items-center text-medium"}>
                             {user?.followers ? <NumberTicker value={user?.followers} /> : <p>-</p>}
                             <p className={"text-neutral-500"}>Followers</p>
                         </div>
-                        <div className={"flex flex-col items-center text-medium"}>   
+                        <div className={"flex flex-col items-center text-medium"}>
                             {user?.following ? <NumberTicker value={user?.following} /> : <p>-</p>}
                             <p className={"text-neutral-500"}>Following</p>
                         </div>
@@ -99,27 +129,27 @@ export default function UserDetails({user}: {user: UserTypes}) {
 
                 <div className={"w-full h-auto"}>
                     <div className={"h-full font-rubik flex flex-col items-start justify-between gap-1"}>
-                            <p className={"text-xl "}>{user?.name}</p>
-                            <p className={"text-sm text-gray-500"}>{user?.displayName} {user?.gender && <span>. {user?.gender}</span>}</p>
-                            <p className={"text-medium text-gray-800 dark:text-gray-400"}>
-                                {/* {user?.description || (
+                        <p className={"text-xl "}>{user?.name}</p>
+                        <p className={"text-sm text-gray-500"}>{user?.displayName} {user?.gender && <span>. {user?.gender}</span>}</p>
+                        <p className={"text-medium text-gray-800 dark:text-gray-400"}>
+                            {/* {user?.description || (
                                     <span className={"text-blue-500 font-bold hover:underline cursor-pointer"}>add Description</span>
                                 )} */}
-sdweior ewryuwer weu6r23 dsogiasef weu6rqwer dflijwerf asdfytqwerjkdf asduftwerj xdfyugqwse0rfjqwef asdfgyqwe9rfw f
-sdweior ewryuwer weu6r23 dsogiasef weu6rqwer dflijwerf asdfytqwerjkdf asduftwerj xdfyugqwse0rfjqwef asdfgyqwe9rfw f
-                            </p>
-                            <div className={"w-full flex gap-1 items-center justify-between mt-3"}>
-                                <Button  className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
-                                    Edit Profile
-                                </Button>
-                                {/* <Button  className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
+                            sdweior ewryuwer weu6r23 dsogiasef weu6rqwer dflijwerf asdfytqwerjkdf asduftwerj xdfyugqwse0rfjqwef asdfgyqwe9rfw f
+                            sdweior ewryuwer weu6r23 dsogiasef weu6rqwer dflijwerf asdfytqwerjkdf asduftwerj xdfyugqwse0rfjqwef asdfgyqwe9rfw f
+                        </p>
+                        <div className={"w-full flex gap-1 items-center justify-between mt-3"}>
+                            <Button className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
+                                Edit Profile
+                            </Button>
+                            {/* <Button  className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
                                     Edit Profile
                                 </Button>
                                 <Button  className={"tracking-wider border-2 border-gray-600"} color={"default"} variant={"faded"}>
                                     Edit Profile
                                 </Button> */}
-                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
             <div className={"w-full h-full  hidden sm:flex"}>
@@ -156,7 +186,7 @@ sdweior ewryuwer weu6r23 dsogiasef weu6rqwer dflijwerf asdfytqwerjkdf asduftwerj
                                 <p className={"text-2xl text-gray-500 mb-10"}>No Languages</p>
                             </div>}
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

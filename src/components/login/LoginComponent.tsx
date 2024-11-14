@@ -330,7 +330,7 @@ export const LoginComponent = () => {
       <Modal
         backdrop={"blur"}
         isOpen={isOpen}
-        // isOpen={true}
+        isDismissable={false}
         onOpenChange={onOpenChange}
         hideCloseButton={true}
         motionProps={{

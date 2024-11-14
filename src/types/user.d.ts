@@ -21,4 +21,5 @@ export interface UserContextType {
   isUserLoggedIn: () => boolean;
   setUserState: (user: UserTypes | null) => void;
   setTokenInLocalStorage: (token: string) => void;
+  getToken: () => string | null;
 }

@@ -9,7 +9,8 @@ const UserContext = createContext<UserContextType>({
   user: null,
   isUserLoggedIn: () => false,
   setUserState: () => {},
-  setTokenInLocalStorage: () => {}
+  setTokenInLocalStorage: () => {},
+  getToken: () => "",
 });
 
 export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -34,12 +35,18 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     localStorage.setItem("user-token", token);
   };
 
+  const getToken = (): string | null => {
+    return localStorage.getItem("user-token");
+  };
+
+
   return (
     <UserContext.Provider value={{
       user,
       isUserLoggedIn,
       setUserState,
-      setTokenInLocalStorage
+      setTokenInLocalStorage,
+      getToken
     }}>
       {children}
     </UserContext.Provider>
