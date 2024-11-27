@@ -46,6 +46,8 @@ export const Card = ({
   const [liked, setLiked] = useState<boolean>(false);
   const router = useRouter();
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  console.log("card id:- ", id);
+  
 
   return (
     <div

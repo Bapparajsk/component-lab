@@ -16,7 +16,7 @@ import {
 import { IconBrandGithub, IconBrandLinkedin, IconTableFilled } from "@tabler/icons-react";
 import { SearchIcon } from "@nextui-org/shared-icons";
 import Link from "next/link";
-import {useRouter} from "next/navigation";;
+import { useRouter } from "next/navigation";;
 
 import { ThemeToggleButton, TolContent } from "@/components/navbar";
 import { HoveredLink, Menu, MenuItem } from "@/components/ui/dropdown";
@@ -54,7 +54,7 @@ export default function AppNavbar() {
         },
         {
             name: "Github",
-            url: "https://github.com/Bapparajsk",
+            url: "https://github.com/Bapparajsk/component-lab",
             icon: IconBrandGithub,
         },
     ];
@@ -65,7 +65,6 @@ export default function AppNavbar() {
             isMenuOpen={isMenuOpen}
             onMenuOpenChange={setIsMenuOpen}
             className={"z-[1000]"}
-
         >
             <NavbarContent justify={"start"} className={"lg:hidden"}>
                 <NavbarBrand>
@@ -106,28 +105,26 @@ export default function AppNavbar() {
                 <NavbarBrand>
                     <div className={"w-full h-full flex items-center"}>
                         <Menu setActive={setActive}>
-                            {
-                                Object.keys(content).map((item, index) => {
-                                    return (
-                                        <MenuItem setActive={setActive} active={active} item={item} key={index}>
-                                            <div className={"flex flex-col space-y-4 text-sm"}>
-                                                {
-                                                    content[item].map((subItem, subIndex) => {
-                                                        return (
-                                                            <HoveredLink
-                                                                href={`/${optimalPath(item)}/${subItem.name.toLowerCase()}`}
-                                                                title={item as "Getting Started" | "Components" | "Special Effects"}
-                                                                key={subIndex}>
-                                                                {subItem.name}
-                                                            </HoveredLink>
-                                                        );
-                                                    })
-                                                }
-                                            </div>
-                                        </MenuItem>
-                                    );
-                                })
-                            }
+                            {Object.keys(content).map((item, index) => {
+                                return (
+                                    <MenuItem setActive={setActive} active={active} item={item} key={index}>
+                                        <div className={"flex flex-col space-y-4 text-sm"}>
+                                            {
+                                                content[item].map((subItem, subIndex) => {
+                                                    return (
+                                                        <HoveredLink
+                                                            href={`/${optimalPath(item)}/${subItem.name.toLowerCase()}`}
+                                                            title={item as "Getting Started" | "Components" | "Special Effects"}
+                                                            key={subIndex}>
+                                                            {subItem.name}
+                                                        </HoveredLink>
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                    </MenuItem>
+                                );
+                            })}
                         </Menu>
                     </div>
                 </NavbarBrand>
@@ -160,32 +157,32 @@ export default function AppNavbar() {
                 </NavbarItem>
                 <NavbarItem>
                     {user ? (
-                          <Tooltip
-                            content={user?.name && user?.description && user?.displayName && <TolContent name={user.name}/>}
-                          >
-                              <User
+                        <Tooltip
+                            content={user?.name && user?.description && user?.displayName && <TolContent name={user.name} />}
+                        >
+                            <User
                                 name={user?.name || "John"}
                                 description={(
-                                  <Link className={"text-blue-500"} href={"/profile"}
+                                    <Link className={"text-blue-500"} href={"/profile"}
                                         target={"_blank"}>
-                                      {user?.displayName || "@john"}
-                                  </Link>
+                                        {user?.displayName || "@john"}
+                                    </Link>
                                 )}
                                 onClick={() => router.push("/profile")}
                                 avatarProps={{
                                     src: user?.userImage || "https://extension.harvard.edu/wp-content/uploads/sites/8/2020/10/computer-programming.jpg",
                                     className: "cursor-pointer"
                                 }}
-                              />
-                          </Tooltip>
+                            />
+                        </Tooltip>
                     ) : (
-                      <Button
-                        variant={"flat"}
-                        color={"success"}
-                        onPress={() => router.push("/login")}
-                      >
-                          Log In
-                      </Button>
+                        <Button
+                            variant={"flat"}
+                            color={"success"}
+                            onPress={() => router.push("/login")}
+                        >
+                            Log In
+                        </Button>
                     )}
 
                 </NavbarItem>

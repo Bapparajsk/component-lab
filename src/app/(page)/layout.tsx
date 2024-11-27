@@ -7,7 +7,6 @@ import { SideBar } from "@/components/mainPage/SideBar";
 
 const ComponentLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
 
-
   return (
     <div className={"w-full mx-auto flex flex-col items-center"}>
       <div className={"w-full h-auto flex"}>

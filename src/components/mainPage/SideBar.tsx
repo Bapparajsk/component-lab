@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { IconTableFilled } from "@tabler/icons-react";
 import { Key } from "@react-types/shared";
+import { useRouter } from "next/navigation";
 
 import {
   AnimateIcon,
@@ -72,7 +73,8 @@ const postLinked = [
 export const SideBar = () => {
 
   const [selectedKeys, setSelectedKeys] = useState<Set<Key> | string>(new Set(["animated"]));
-  const { isUserLoggedIn } = useUser();
+  const { user } = useUser();
+  const router = useRouter();
   // const selectedValue = useMemo(
   //   () => Array.from(selectedKeys).join(";"),
   //   [selectedKeys]
@@ -95,16 +97,20 @@ export const SideBar = () => {
         </div>
         <div className={"w-full h-full"}>
           <div className={"w-full h-auto pl-3 py-4 font-Work-Sans"}>
-            {userLinks.map((item) => (
+            {user ? userLinks.map((item) => (
               <SideBarItem
                 key={item.title}
                 title={item.title}
                 icon={item.icon}
-                link={isUserLoggedIn() ? item.link : "/login"}
+                link={user ? item.link : "/login"}
                 color={"auto"}
                 textAnimation={true}
               />
-            ))}
+            )) : (
+              <p className={"cursor-pointer transition-all duration-500 hover:underline hover:text-blue-600"} onClick={() => {
+                router.push("/login");
+              }}>please login</p>
+            )}
           </div>
           <div className={"w-full h-[1px] bg-gray-600"} />
           <div
