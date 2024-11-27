@@ -105,7 +105,7 @@ export const Buttons = [
                     ></path>
                     </svg>
                 );
-            };`,
+            }`,
         }
     }
 ];

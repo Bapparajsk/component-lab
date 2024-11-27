@@ -4,15 +4,28 @@ import { ReactNode, useState } from "react";
 import { IconHeart, IconHeartFilled, IconUserSquareRounded, IconPrompt, IconMessageReport } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Chip } from "@nextui-org/react";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, Chip } from "@nextui-org/react";
 
 import { cn } from "@/lib/utils";
-
+import { ExampleCode } from "@/components/postPage/ExampleCode";
 
 const MotionIconHeart = motion.create(IconHeart);
 const MotionIconHeartFilled = motion.create(IconHeartFilled);
+
+const getColorByProgress = (progress: string | undefined) => {
+  switch (progress) {
+    case "pending":
+      return "#7CF5FF";
+    case "approved":
+      return "#9BEC00";
+    case "creating-files":
+      return "#006BFF";
+    case "rejected":
+      return "#D91656";
+    default:
+      return "#FFFFFF";
+  }
+};
 
 export const Card = ({
   component,
@@ -33,10 +46,12 @@ export const Card = ({
   const [liked, setLiked] = useState<boolean>(false);
   const router = useRouter();
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  console.log("Card -> id", id);
-  
+
   return (
-    <div className={"w-auto border border-gray-600 p-5 rounded-md flex flex-col gap-y-3"} >
+    <div
+      className={`w-auto border-t border-l border-r border-gray-600 p-5 rounded-md flex flex-col gap-y-3 relative border-b`}
+      style={{borderBottomColor: getColorByProgress("approved")}}
+    >
       <div className={"w-full h-auto flex items-center justify-between"}>
         <div className={"w-auto h-auto flex gap-2"}>
           {[{Icon: IconUserSquareRounded, title: "user"}, {Icon: IconPrompt, title: "code"}, {Icon: IconMessageReport, title: "report"}].map((item, idx) => (
@@ -87,13 +102,13 @@ export const Card = ({
       <div className={`h-auto w-full border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50`} >
         {component}
       </div>
-      <Button onPress={onOpen}>Open Modal</Button>
       <Modal 
         backdrop={"blur" }
         isOpen={isOpen} 
         onOpenChange={onOpenChange}
         placement={"center"}
         size={"5xl"}
+        className={"max-h-[85vh] overflow-y-scroll"}
         motionProps={{
           variants: {
             enter: {
@@ -116,7 +131,7 @@ export const Card = ({
         }}
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className={"flex flex-col gap-1"}>
                 <h2 className={"text-2xl font-bold"}>Button</h2>
@@ -135,22 +150,8 @@ export const Card = ({
                 </p>
               </ModalHeader>
               <ModalBody>
-                {useGiler && (
-                  <div className={"w-full h-auto"}>
-                    <SyntaxHighlighter language={"jsx"} style={dracula}>
-                      {useGiler.exampleCode}
-                    </SyntaxHighlighter>
-                  </div>
-                )}
+                {useGiler && ( <ExampleCode code={useGiler} /> )}
               </ModalBody>
-              <ModalFooter>
-                <Button color={"danger"} variant={"light"} onPress={onClose}>
-                  Close
-                </Button>
-                <Button color={"primary"} onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
             </>
           )}
         </ModalContent>
