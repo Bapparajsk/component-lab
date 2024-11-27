@@ -14,14 +14,12 @@ const MotionIconHeartFilled = motion.create(IconHeartFilled);
 
 const getColorByProgress = (progress: string | undefined) => {
   switch (progress) {
-    case "pending":
-      return "#7CF5FF";
-    case "approved":
-      return "#9BEC00";
-    case "creating-files":
-      return "#006BFF";
-    case "rejected":
+    case "new":
       return "#D91656";
+    case "animated":
+      return "#7BD3EA";
+    case "favorited":
+      return "#EB3678";
     default:
       return "#FFFFFF";
   }
@@ -33,7 +31,8 @@ export const Card = ({
   userId,
   id,
   flags,
-  useGiler
+  useGiler,
+  flag,
 }: {
   component?: ReactNode;
   developerName?: string;
@@ -41,6 +40,7 @@ export const Card = ({
   id?: string;
   flags?: Set<string>;
   useGiler?: any;
+  flag?: string;
 }) => {
 
   const [liked, setLiked] = useState<boolean>(false);
@@ -52,7 +52,7 @@ export const Card = ({
   return (
     <div
       className={`w-auto border-t border-l border-r border-gray-600 p-5 rounded-md flex flex-col gap-y-3 relative border-b`}
-      style={{borderBottomColor: getColorByProgress("approved")}}
+      style={{borderBottomColor: getColorByProgress(flag)}}
     >
       <div className={"w-full h-auto flex items-center justify-between"}>
         <div className={"w-auto h-auto flex gap-2"}>
@@ -101,7 +101,7 @@ export const Card = ({
             </AnimatePresence>
           </div>
       </div>
-      <div className={`h-auto w-full border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50`} >
+      <div className={`h-auto w-auto border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50 p-10`} >
         {component}
       </div>
       <Modal 

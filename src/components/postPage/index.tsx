@@ -5,10 +5,14 @@ import { useRef } from "react";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { Card } from "@/components/postPage/Card";
 import { Buttons } from "@/data/component/button";
+import{ Cards } from "@/data/component/card/index";
 
 
 function Posts() {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  console.log("Cards:- ", Cards);
+  
 
   return (
     <div className={"w-full h-full p-5"}>
@@ -23,7 +27,7 @@ function Posts() {
       />
 
       <div className={"w-full h-full flex flex-wrap items-center gap-2"}>
-        {Buttons.map((item, idx) => (<Card key={idx} useGiler={item.useGiler} component={item.mainCode()} flags={item.flags} developerName={item.developerName}/>))}
+        {Cards?.map((item, idx) => (<Card key={idx} flag={item.flag} useGiler={item.useGiler} component={item.mainCode()} flags={item.flags} developerName={item.developerName}/>))}
       </div>
     </div>
   );

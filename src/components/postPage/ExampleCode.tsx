@@ -38,7 +38,7 @@ export const ExampleCode = ({ code }: { code: any }) => {
           className={"mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 relative [&_h3.font-heading]:text-base [&_h3.font-heading]:font-semibold"}>
           <div
             className={"[&>h3]:step steps mb-12 ml-4 border-l border-neutral-200 dark:border-neutral-700 pl-8 [counter-reset:step]"}>
-            {code?.dependencies && <>x<h3
+            {code?.dependencies && <><h3
               className={"font-heading relative mt-8 scroll-m-20 text-xl font-semibold tracking-tight text-black dark:text-neutral-200"}>
               <span
                 className={"absolute block -left-8 rounded-tr-full rounded-br-full top-0 z-20 h-full bg-neutral-200 dark:bg-neutral-700 w-[6px]"}></span>
@@ -49,7 +49,7 @@ export const ExampleCode = ({ code }: { code: any }) => {
                   <div className={"w-full h-auto flex items-center justify-between"}>
                     <div className={"w-auto h-auto flex gap-2"}>
                       <div className={cn("cursor-pointer flex items-center gap-1 transition-all duration-300")}>
-                        <span className={"text-sm text-white"}>npm i @nextui-org/react</span>
+                        <span className={"text-sm text-white"}>{code.dependencies}</span>
                       </div>
                     </div>
                     <div className={"cursor-pointer"}>
@@ -114,7 +114,7 @@ export const ExampleCode = ({ code }: { code: any }) => {
             <div className={"h-auto w-full relative mt-8"}>
               <div className={"w-full h-auto"}>
                 <p><code
-                  className={"relative rounded bg-neutral-400/60 px-[0.3rem] py-[0.2rem] text-sm dark:bg-neutral-700/70 dark:text-neutral-200 __className_faaa9a"}>components/ui/{code?.source?.path}</code>
+                  className={"relative rounded bg-neutral-400/60 px-[0.3rem] py-[0.2rem] text-sm dark:bg-neutral-700/70 dark:text-neutral-200 __className_faaa9a"}>components/ui/{code?.source?.fileName}</code>
                 </p>
                 <div className={cn("w-full h-52 overflow-y-hidden", isShowSourceCode && "h-auto overflow-y-auto")}>
                   <SyntaxHighlighter
