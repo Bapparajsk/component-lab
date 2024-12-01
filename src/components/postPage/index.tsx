@@ -1,18 +1,41 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { Card } from "@/components/postPage/Card";
 import { Buttons } from "@/data/component/button";
-import{ Cards } from "@/data/component/card/index";
+import{ Cards } from "@/data/component/card";
+import { Type } from "@/data/component/types";
 
 
 function Posts() {
+  const [components, setComponents] = useState<Type[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname().split("/")[2]?.toLowerCase();
+  const map = {
+    button: Buttons,
+    card: Cards,
+  };
 
-  console.log("Cards:- ", Cards);
-  
+  useEffect(() => {
+    console.log(map);
+    if (pathname) {
+      if (pathname === "all") return setComponents([...Buttons, ...Cards]);
+      // @ts-ignore
+      setComponents(map[pathname]);
+    }
+
+  }, [pathname]);
+
+
+  if (!["all", "button", "card"].includes(pathname)) {
+    console.log(pathname);
+    return <div className={"w-full h-full flex items-center justify-center"}>
+        <h3>invalid component</h3>
+    </div>;
+  }
 
   return (
     <div className={"w-full h-full p-5"}>
@@ -25,9 +48,10 @@ function Posts() {
           mass: 0.3,
         }}
       />
-
       <div className={"w-full h-full flex flex-wrap items-center gap-2"}>
-        {Cards?.map((item, idx) => (<Card key={idx} flag={item.flag} useGiler={item.useGiler} component={item.mainCode()} flags={item.flags} developerName={item.developerName}/>))}
+        {components.map((item, idx) => (
+          <Card key={idx} flag={item.flag} useGiler={item.useGiler} component={item.mainCode()} flags={item.flags}
+                developerName={item.developerName} />))}
       </div>
     </div>
   );

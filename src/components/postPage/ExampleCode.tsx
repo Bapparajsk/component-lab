@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 export const ExampleCode = ({ code }: { code: any }) => {
 
   const [isShowExampleCode, setIsShowExampleCode] = useState(false);
-  const [isShowSourceCode, setIsShowSourceCode] = useState(false);
 
   return (
     <div className={"w-full h-auto mt-10"}>
@@ -23,7 +22,8 @@ export const ExampleCode = ({ code }: { code: any }) => {
           </div>
         </div>
         <div className={cn("absolute h-52 w-full bg-[rgba(0,0,0,0.49)] bottom-0 flex items-center justify-center shadow-[0px_0px_100px_20px_rgba(0,0,0,0.75)_inset]",
-          isShowExampleCode && "h-14"
+          isShowExampleCode && "h-14",
+          isShowExampleCode && "shadow-[0px_0px_100px_20px_rgba(0,0,0,0.75)]"
         )}>
           <Button variant={"faded"} color={"default"} onPress={() => {
             setIsShowExampleCode(!isShowExampleCode);
@@ -116,7 +116,7 @@ export const ExampleCode = ({ code }: { code: any }) => {
                 <p><code
                   className={"relative rounded bg-neutral-400/60 px-[0.3rem] py-[0.2rem] text-sm dark:bg-neutral-700/70 dark:text-neutral-200 __className_faaa9a"}>components/ui/{code?.source?.fileName}</code>
                 </p>
-                <div className={cn("w-full h-52 overflow-y-hidden", isShowSourceCode && "h-auto overflow-y-auto")}>
+                <div className={cn("w-full h-52 overflow-y-hidden", "h-auto overflow-y-auto")}>
                   <SyntaxHighlighter
                     language={"jsx"}
                     style={dracula}
@@ -127,12 +127,7 @@ export const ExampleCode = ({ code }: { code: any }) => {
               </div>
               <div
                 className={cn("absolute h-52 w-full bottom-0 flex items-center justify-center",
-                  isShowSourceCode && "h-14",
-                  !isShowSourceCode && "bg-[rgba(0,0,0,0.49)] shadow-[0px_0px_100px_20px_rgba(0,0,0,0.75)_inset]"
-                )}>
-                <Button variant={"faded"} color={"default"} onPress={() => {
-                  setIsShowSourceCode(!isShowExampleCode);
-                }}>{isShowSourceCode ? "Collapse" : "Expand"}</Button>
+                )}>s
               </div>
             </div>
           </div>

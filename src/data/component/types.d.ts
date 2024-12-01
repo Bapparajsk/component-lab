@@ -1,9 +1,9 @@
 export interface Type {
-    id: number;
+    id: string;
     userId: string;
     developerName: string;
     title: string;
-    discription?: string;
+    description?: string;
     tag: Set<string>;
     flags: Set<string>;
     mainCode: () => JSX.Element;

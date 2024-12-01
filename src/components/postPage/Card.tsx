@@ -101,7 +101,7 @@ export const Card = ({
             </AnimatePresence>
           </div>
       </div>
-      <div className={`h-auto w-auto border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50 p-10`} >
+      <div className={`border border-gray-500 rounded-md bg-default-200/50 dark:bg-gray-900/50 p-10`} >
         {component}
       </div>
       <Modal 
