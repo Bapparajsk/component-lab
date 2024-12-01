@@ -125,10 +125,6 @@ export const ExampleCode = ({ code }: { code: any }) => {
                   </SyntaxHighlighter>
                 </div>
               </div>
-              <div
-                className={cn("absolute h-52 w-full bottom-0 flex items-center justify-center",
-                )}>s
-              </div>
             </div>
           </div>
         </div>

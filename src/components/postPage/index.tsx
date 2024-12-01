@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { Card } from "@/components/postPage/Card";
-import { Buttons } from "@/data/component/button";
-import{ Cards } from "@/data/component/card";
 import { Type } from "@/data/component/types";
+
+import { Buttons } from "../data/button";
+import{ Cards } from "../data/card";
 
 
 function Posts() {
@@ -48,7 +49,7 @@ function Posts() {
           mass: 0.3,
         }}
       />
-      <div className={"w-full h-full flex flex-wrap items-center gap-2"}>
+      <div className={"w-full h-full flex flex-wrap items-center gap-2 justify-center"}>
         {components.map((item, idx) => (
           <Card key={idx} flag={item.flag} useGiler={item.useGiler} component={item.mainCode()} flags={item.flags}
                 developerName={item.developerName} />))}

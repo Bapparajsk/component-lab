@@ -40,6 +40,9 @@ const config: Config = {
         gradient: "gradient 8s linear infinite",
         'fade-up': 'fade-up 1000ms var(--animation-delay, 0ms) ease forwards',
         'image-glow': 'image-glow 4100ms 600ms ease-out forwards',
+        "shimmer-slide":
+          "shimmer-slide var(--speed) ease-in-out infinite alternate",
+        "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
       },
       keyframes: {
         rainbow: {
@@ -72,6 +75,25 @@ const config: Config = {
           '100%': {
             opacity: '0.4'
           }
+        },
+        "spin-around": {
+          "0%": {
+            transform: "translateZ(0) rotate(0)",
+          },
+          "15%, 35%": {
+            transform: "translateZ(0) rotate(90deg)",
+          },
+          "65%, 85%": {
+            transform: "translateZ(0) rotate(270deg)",
+          },
+          "100%": {
+            transform: "translateZ(0) rotate(360deg)",
+          },
+        },
+        "shimmer-slide": {
+          to: {
+            transform: "translate(calc(100cqw - 100%), 0)",
+          },
         },
       },
       boxShadow: {
